@@ -1,0 +1,254 @@
+﻿[
+  {
+    "DeviceCategoryName": "Heating/Cooling",
+    "DeviceTypes": [
+      {
+        "DeviceTypeName": "Thermostat",
+        "Devices": [
+          {
+            "DeviceName": "Nest 1st Generation"
+          },
+          {
+            "DeviceName": "Nest 2nd Generation"
+          },
+          {
+            "DeviceName": "Nest 3rd Generation"
+          },
+          {
+            "DeviceName": "Nest 4th Generation"
+          },
+          {
+            "DeviceName": "EcoBee Smart"
+          },
+          {
+            "DeviceName": "EcoBee Smart Si"
+          },
+          {
+            "DeviceName": "EcoBee 3 (1st Generation)"
+          },
+          {
+            "DeviceName": "EcoBee 3 (2nd Generation)"
+          },
+          {
+            "DeviceName": "EcoBee 3 Lite"
+          },
+          {
+            "DeviceName": "EcoBee 4" 
+          }
+        ] 
+      },
+      {
+        "DeviceTypeName": "Air Conditioner" 
+      }
+    ]  
+  },
+  {
+    "DeviceCategoryName": "Lighting",
+    "DeviceTypes": [
+      {
+        "DeviceTypeName": "Light bulb - White",
+        "Devices": [
+          {
+            "DeviceName": "Philips Hue - White E26"
+          },
+          {
+            "DeviceName": "Philips Hue - White Ambiance E26"
+          },
+          {
+            "DeviceName": "Philips Hue - White Ambiance E12"
+          },
+          {
+            "DeviceName": "Philips Hue - White Ambiance BR30"
+          },
+          {
+            "DeviceName": "Philips Hue - White Ambiance GU10" 
+          }
+        ] 
+      },
+      {
+        "DeviceTypeName": "Light bulb - Color",
+        "Devices": [
+          {
+            "DeviceName": "Philips Hue - White and Color Ambiance BR30"
+          },
+          {
+            "DeviceName": "Philips Hue - White and Color Ambiance E12"
+          },
+          {
+            "DeviceName": "Philips Hue - White and Color Ambiance E26"
+          },
+          {
+            "DeviceName": "Philips Hue - White and Color Ambiance GU10"
+          },
+          {
+            "DeviceName": "Philips Hue - White and Color Ambiance PAR16"
+          }
+        ] 
+      },
+      {
+        "DeviceTypeName": "Lamp",
+        "Devices": [
+          {
+            "DeviceName": "Philips Hue - Beyond suspension light"
+          },
+          {
+            "DeviceName": "Philips Hue - Beyond ceiling light"
+          },
+          {
+            "DeviceName": "Philips Hue - Beyond table lamp"
+          },
+          {
+            "DeviceName": "Philips Hue - Go Portable Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Hue Bloom"
+          },
+          {
+            "DeviceName": "Philips Hue - Phoenix Suspension Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Phoenix Ceiling Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Phoenix Wall Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Phoenix Table Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Phoenix Recessed Spotlight"
+          },
+          {
+            "DeviceName": "Philips Hue - Fair Suspension Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Fair Ceiling Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Cher Suspension Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Cher Semi-Flushmount Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Cher Ceiling Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Being Ceiling Light"
+          },
+          {
+            "DeviceName": "Philips Hue - Wellness Table Lamp"
+          },
+          {
+            "DeviceName": "Philips Hue - Wellner Table Lamp"
+          },
+          {
+            "DeviceName": "Philips Hue - 5/6\" Retrofit Recessed Downlight"
+          },
+          {
+            "DeviceName": "Philips Hue - 4\" Retrofit Recessed Downlight"
+          }
+        ] 
+      },
+      {
+        "DeviceTypeName": "Lightstrip",
+        "Devices": [
+          {
+            "DeviceName": "Philips Hue - White and Color Ambiance NA base"
+          },
+          {
+            "DeviceName": "Philips Hue - White and Color Ambiance NA extension"
+          }
+        ] 
+      }
+    ] 
+  },
+  {
+    "DeviceCategoryName": "Hubs/Bridges/Controllers",
+    "DeviceTypes": [
+      {
+        "DeviceTypeName": "Bridge",
+        "Devices": [
+          {
+            "DeviceName": "Philips Hue Bridge"
+          }
+        ]
+      },
+      {
+        "DeviceTypeName": "Hub",
+        "Devices": [
+          {
+            "DeviceName": "Samsung SmartThings Hub"
+          }
+        ] 
+      },
+      {
+        "DeviceTypeName":  "Controller" 
+      }
+    ] 
+  },
+  {
+    "DeviceCategoryName": "Security",
+    "DeviceTypes": [
+      {
+        "DeviceTypeName": "Camera"
+      },
+      {
+        "DeviceTypeName": "Lock"
+      },
+      {
+        "DeviceTypeName": "Doorbell",
+        "Devices": [
+          {
+            "DeviceName": "Ring Doorbell"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "DeviceCategoryName": "Sensors",
+    "DeviceTypes": [
+      {
+        "DeviceTypeName": "Motion Sensors",
+        "Devices": [
+          {
+            "DeviceName": "Hue Motion Sensor"
+          },
+          {
+            "DeviceName": "SmartThings Motion Sensor"
+          }
+        ]
+      },
+      {
+        "DeviceTypeName": "Multipurpose Sensors",
+        "Devices": [
+          {
+            "DeviceName": "SmartThings Multipurpose Sensor"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "DeviceCategoryName": "Switches",
+    "DeviceTypes": [
+      {
+        "DeviceTypeName": "Dimmer Switches",
+        "Devices": [
+          {
+            "DeviceName": "Hue Dimmer Switch"
+          }
+        ]
+      },
+      {
+        "DeviceTypeName": "Tap Switch",
+        "Devices": [
+          {
+            "DeviceName": "Hue Tap Switch"
+          }
+        ]
+      }
+    ] 
+  }
+]
