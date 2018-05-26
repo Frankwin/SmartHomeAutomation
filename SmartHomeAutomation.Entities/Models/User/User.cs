@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using SmartHomeAutomation.Web.Models.Accounts;
 
-namespace SmartHomeAutomation.Web.Models.Users
+namespace SmartHomeAutomation.Entities.Models.User
 {
     [Table(nameof(User), Schema = "Users")]
     public class User
@@ -19,15 +18,16 @@ namespace SmartHomeAutomation.Web.Models.Users
         [MaxLength(100)]
         [Required]
         public string EmailAddress { get; set; }
-        [Required]
-        public string CreatedBy { get; set; }
-        public DateTime CreatedOn { get; set; } = new DateTime();
-        public string UpdatedBy { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-        [MaxLength(1)]
-        public string Status { get; set; } = "A";
-
+        
         public Guid AccountId { get; set; }
-        public Account Account { get; set; }
+        public Account.Account Account { get; set; }
+
+        #region Tracking Properties
+        public DateTime CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime LastUpdatedAt { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        #endregion
     }
 }

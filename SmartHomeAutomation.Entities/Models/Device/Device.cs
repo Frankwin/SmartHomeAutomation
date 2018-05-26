@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SmartHomeAutomation.Entities.Interfaces;
 
-namespace SmartHomeAutomation.Web.Models.Devices
+namespace SmartHomeAutomation.Entities.Models.Device
 {
     [Table(nameof(Device), Schema = "Devices")]
-    public class Device
+    public class Device : ITrackable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -22,15 +23,12 @@ namespace SmartHomeAutomation.Web.Models.Devices
         public Guid ManufacturerId { get; set; }
         public Manufacturer Manufacturer { get; set; }
 
-        [Required]
-        public string CreatedBy { get; set; } = "System Generated";
-
-        [Required]
-        public DateTime CreatedOn { get; set; } = new DateTime();
-        public string UpdatedBy { get; set; } = "System Generated";
-        public DateTime UpdatedOn { get; set; }
-        [MaxLength(1)]
-        [Required]
-        public string Status { get; set; } = "A";
+        #region Tracking Properties
+        public DateTime CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime LastUpdatedAt { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        #endregion
     }
 }

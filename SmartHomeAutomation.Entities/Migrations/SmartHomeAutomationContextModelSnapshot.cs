@@ -2,13 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using SmartHomeAutomation.Web.Models;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
+using SmartHomeAutomation.Entities.Models;
 using System;
 
-namespace SmartHomeAutomation.Web.Migrations
+namespace SmartHomeAutomation.Entities.Migrations
 {
     [DbContext(typeof(SmartHomeAutomationContext))]
-    class SmartHomeAutomationContextModelSnapshot : ModelSnapshot
+    partial class SmartHomeAutomationContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -17,7 +20,7 @@ namespace SmartHomeAutomation.Web.Migrations
                 .HasAnnotation("ProductVersion", "2.0.3-rtm-10026")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SmartHomeAutomation.Web.Models.Accounts.Account", b =>
+            modelBuilder.Entity("SmartHomeAutomation.Entities.Models.Account.Account", b =>
                 {
                     b.Property<Guid>("AccountId")
                         .ValueGeneratedOnAdd();
@@ -26,33 +29,29 @@ namespace SmartHomeAutomation.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired();
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<string>("CreatedBy");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(1);
+                    b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("UpdatedBy");
+                    b.Property<DateTime>("LastUpdatedAt");
 
-                    b.Property<DateTime>("UpdatedOn");
+                    b.Property<string>("LastUpdatedBy");
 
                     b.HasKey("AccountId");
 
                     b.ToTable("Account","Accounts");
                 });
 
-            modelBuilder.Entity("SmartHomeAutomation.Web.Models.Devices.Device", b =>
+            modelBuilder.Entity("SmartHomeAutomation.Entities.Models.Device.Device", b =>
                 {
                     b.Property<Guid>("DeviceId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired();
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("DeviceName")
                         .IsRequired()
@@ -60,15 +59,13 @@ namespace SmartHomeAutomation.Web.Migrations
 
                     b.Property<Guid>("DeviceTypeId");
 
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastUpdatedAt");
+
+                    b.Property<string>("LastUpdatedBy");
+
                     b.Property<Guid>("ManufacturerId");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(1);
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime>("UpdatedOn");
 
                     b.HasKey("DeviceId");
 
@@ -79,54 +76,48 @@ namespace SmartHomeAutomation.Web.Migrations
                     b.ToTable("Device","Devices");
                 });
 
-            modelBuilder.Entity("SmartHomeAutomation.Web.Models.Devices.DeviceCategory", b =>
+            modelBuilder.Entity("SmartHomeAutomation.Entities.Models.Device.DeviceCategory", b =>
                 {
                     b.Property<Guid>("DeviceCategoryId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired();
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("DeviceCategoryName")
                         .IsRequired();
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(1);
+                    b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("UpdatedBy");
+                    b.Property<DateTime>("LastUpdatedAt");
 
-                    b.Property<DateTime>("UpdatedOn");
+                    b.Property<string>("LastUpdatedBy");
 
                     b.HasKey("DeviceCategoryId");
 
                     b.ToTable("DeviceCategory","Devices");
                 });
 
-            modelBuilder.Entity("SmartHomeAutomation.Web.Models.Devices.DeviceType", b =>
+            modelBuilder.Entity("SmartHomeAutomation.Entities.Models.Device.DeviceType", b =>
                 {
                     b.Property<Guid>("DeviceTypeId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired();
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<Guid>("DeviceCategoryId");
 
                     b.Property<string>("DeviceTypeName")
                         .IsRequired();
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(1);
+                    b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("UpdatedBy");
+                    b.Property<DateTime>("LastUpdatedAt");
 
-                    b.Property<DateTime>("UpdatedOn");
+                    b.Property<string>("LastUpdatedBy");
 
                     b.HasKey("DeviceTypeId");
 
@@ -135,15 +126,20 @@ namespace SmartHomeAutomation.Web.Migrations
                     b.ToTable("DeviceType","Devices");
                 });
 
-            modelBuilder.Entity("SmartHomeAutomation.Web.Models.Devices.Manufacturer", b =>
+            modelBuilder.Entity("SmartHomeAutomation.Entities.Models.Device.Manufacturer", b =>
                 {
                     b.Property<Guid>("ManufacturerId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired();
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastUpdatedAt");
+
+                    b.Property<string>("LastUpdatedBy");
 
                     b.Property<string>("ManufacturerName")
                         .HasMaxLength(50);
@@ -151,44 +147,34 @@ namespace SmartHomeAutomation.Web.Migrations
                     b.Property<string>("ManufacturerWebsiteAddress")
                         .HasMaxLength(100);
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(1);
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime>("UpdatedOn");
-
                     b.HasKey("ManufacturerId");
 
                     b.ToTable("Manufacturer","Devices");
                 });
 
-            modelBuilder.Entity("SmartHomeAutomation.Web.Models.Users.User", b =>
+            modelBuilder.Entity("SmartHomeAutomation.Entities.Models.User.User", b =>
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("AccountId");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired();
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<DateTime>("CreatedOn");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastUpdatedAt");
+
+                    b.Property<string>("LastUpdatedBy");
+
                     b.Property<string>("Password")
                         .IsRequired();
-
-                    b.Property<string>("Status")
-                        .HasMaxLength(1);
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime?>("UpdatedOn");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -201,30 +187,30 @@ namespace SmartHomeAutomation.Web.Migrations
                     b.ToTable("User","Users");
                 });
 
-            modelBuilder.Entity("SmartHomeAutomation.Web.Models.Devices.Device", b =>
+            modelBuilder.Entity("SmartHomeAutomation.Entities.Models.Device.Device", b =>
                 {
-                    b.HasOne("SmartHomeAutomation.Web.Models.Devices.DeviceType", "DeviceType")
+                    b.HasOne("SmartHomeAutomation.Entities.Models.Device.DeviceType", "DeviceType")
                         .WithMany("Devices")
                         .HasForeignKey("DeviceTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SmartHomeAutomation.Web.Models.Devices.Manufacturer", "Manufacturer")
+                    b.HasOne("SmartHomeAutomation.Entities.Models.Device.Manufacturer", "Manufacturer")
                         .WithMany("Devices")
                         .HasForeignKey("ManufacturerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SmartHomeAutomation.Web.Models.Devices.DeviceType", b =>
+            modelBuilder.Entity("SmartHomeAutomation.Entities.Models.Device.DeviceType", b =>
                 {
-                    b.HasOne("SmartHomeAutomation.Web.Models.Devices.DeviceCategory")
+                    b.HasOne("SmartHomeAutomation.Entities.Models.Device.DeviceCategory")
                         .WithMany("DeviceTypes")
                         .HasForeignKey("DeviceCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SmartHomeAutomation.Web.Models.Users.User", b =>
+            modelBuilder.Entity("SmartHomeAutomation.Entities.Models.User.User", b =>
                 {
-                    b.HasOne("SmartHomeAutomation.Web.Models.Accounts.Account", "Account")
+                    b.HasOne("SmartHomeAutomation.Entities.Models.Account.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);

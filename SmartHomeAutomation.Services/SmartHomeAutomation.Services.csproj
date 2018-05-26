@@ -9,4 +9,8 @@
     <Folder Include="User\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SmartHomeAutomation.Entities\SmartHomeAutomation.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SmartHomeAutomation.Web.Models.Accounts
+namespace SmartHomeAutomation.Entities.Models.Account
 {
     [Table(nameof(Account), Schema="Accounts")]
     public class Account
@@ -13,14 +13,13 @@ namespace SmartHomeAutomation.Web.Models.Accounts
         [MaxLength(50)]
         [Required]
         public string AccountName { get; set; }
-        [Required]
+
+        #region Tracking Properties
+        public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
-        [Required]
-        public DateTime CreatedOn { get; set; } = new DateTime();
-        public string UpdatedBy { get; set; }
-        public DateTime UpdatedOn { get; set; }
-        [MaxLength(1)]
-        [Required]
-        public string Status { get; set; } = "A";
+        public DateTime LastUpdatedAt { get; set; }
+        public string LastUpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        #endregion
     }
 }

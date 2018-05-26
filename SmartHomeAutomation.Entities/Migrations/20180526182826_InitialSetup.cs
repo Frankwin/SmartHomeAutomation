@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
+using System.Collections.Generic;
 
-namespace SmartHomeAutomation.Web.Migrations
+namespace SmartHomeAutomation.Entities.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,11 +24,11 @@ namespace SmartHomeAutomation.Web.Migrations
                 {
                     AccountId = table.Column<Guid>(nullable: false),
                     AccountName = table.Column<string>(maxLength: 50, nullable: false),
-                    CreatedBy = table.Column<string>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    Status = table.Column<string>(maxLength: 1, nullable: false),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    UpdatedOn = table.Column<DateTime>(nullable: false)
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(nullable: false),
+                    LastUpdatedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -40,12 +41,12 @@ namespace SmartHomeAutomation.Web.Migrations
                 columns: table => new
                 {
                     DeviceCategoryId = table.Column<Guid>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
                     DeviceCategoryName = table.Column<string>(nullable: false),
-                    Status = table.Column<string>(maxLength: 1, nullable: false),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    UpdatedOn = table.Column<DateTime>(nullable: false)
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(nullable: false),
+                    LastUpdatedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,13 +59,13 @@ namespace SmartHomeAutomation.Web.Migrations
                 columns: table => new
                 {
                     ManufacturerId = table.Column<Guid>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(nullable: false),
+                    LastUpdatedBy = table.Column<string>(nullable: true),
                     ManufacturerName = table.Column<string>(maxLength: 50, nullable: true),
-                    ManufacturerWebsiteAddress = table.Column<string>(maxLength: 100, nullable: true),
-                    Status = table.Column<string>(maxLength: 1, nullable: false),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    UpdatedOn = table.Column<DateTime>(nullable: false)
+                    ManufacturerWebsiteAddress = table.Column<string>(maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,13 +79,13 @@ namespace SmartHomeAutomation.Web.Migrations
                 {
                     UserId = table.Column<Guid>(nullable: false),
                     AccountId = table.Column<Guid>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
                     EmailAddress = table.Column<string>(maxLength: 100, nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(nullable: false),
+                    LastUpdatedBy = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: false),
-                    Status = table.Column<string>(maxLength: 1, nullable: true),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    UpdatedOn = table.Column<DateTime>(nullable: true),
                     UserName = table.Column<string>(maxLength: 30, nullable: false)
                 },
                 constraints: table =>
@@ -105,13 +106,13 @@ namespace SmartHomeAutomation.Web.Migrations
                 columns: table => new
                 {
                     DeviceTypeId = table.Column<Guid>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
                     DeviceCategoryId = table.Column<Guid>(nullable: false),
                     DeviceTypeName = table.Column<string>(nullable: false),
-                    Status = table.Column<string>(maxLength: 1, nullable: false),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    UpdatedOn = table.Column<DateTime>(nullable: false)
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(nullable: false),
+                    LastUpdatedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -131,14 +132,14 @@ namespace SmartHomeAutomation.Web.Migrations
                 columns: table => new
                 {
                     DeviceId = table.Column<Guid>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
                     DeviceName = table.Column<string>(maxLength: 100, nullable: false),
                     DeviceTypeId = table.Column<Guid>(nullable: false),
-                    ManufacturerId = table.Column<Guid>(nullable: false),
-                    Status = table.Column<string>(maxLength: 1, nullable: false),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    UpdatedOn = table.Column<DateTime>(nullable: false)
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(nullable: false),
+                    LastUpdatedBy = table.Column<string>(nullable: true),
+                    ManufacturerId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {

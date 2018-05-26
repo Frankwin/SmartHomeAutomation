@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SmartHomeAutomation.Web.Models;
-using SmartHomeAutomation.Web.Models.Devices;
+using SmartHomeAutomation.Entities.Models;
+using SmartHomeAutomation.Entities.Models.Device;
 
 namespace SmartHomeAutomation.Web.Controllers.API
 {
@@ -24,10 +24,10 @@ namespace SmartHomeAutomation.Web.Controllers.API
         [HttpGet]
         public IEnumerable<Manufacturer> GetManufacturers()
         {
-            return context.Manufacturers;
+            return context.Manufacturers.Where(x => !x.IsDeleted);
         }
 
-        // GET: api/Manufacturers/5
+        // GET: api/Manufacturers/<GUID>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetManufacturer([FromRoute] Guid id)
         {
@@ -46,7 +46,7 @@ namespace SmartHomeAutomation.Web.Controllers.API
             return Ok(manufacturer);
         }
 
-        // PUT: api/Manufacturers/5
+        // PUT: api/Manufacturers/<GUID>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutManufacturer([FromRoute] Guid id, [FromBody] Manufacturer manufacturer)
         {
@@ -87,13 +87,23 @@ namespace SmartHomeAutomation.Web.Controllers.API
                 return BadRequest(ModelState);
             }
 
-            context.Manufacturers.Add(manufacturer);
+            var existingManufacturer = await GetExistingManufacturer(manufacturer);
+            if (existingManufacturer != null && existingManufacturer.IsDeleted)
+            {
+                context.Entry(existingManufacturer).State = EntityState.Modified;
+                existingManufacturer.IsDeleted = false;
+            }
+            else
+            {
+                context.Manufacturers.Add(manufacturer);
+            }
+
             await context.SaveChangesAsync();
 
             return CreatedAtAction("GetManufacturer", new { id = manufacturer.ManufacturerId }, manufacturer);
         }
 
-        // DELETE: api/Manufacturers/5
+        // DELETE: api/DeviceCategories/<GUID>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteManufacturer([FromRoute] Guid id)
         {
@@ -108,7 +118,7 @@ namespace SmartHomeAutomation.Web.Controllers.API
                 return NotFound();
             }
 
-            manufacturer.Status = "D";
+            manufacturer.IsDeleted = true;
             await context.SaveChangesAsync();
 
             return Ok(manufacturer);
@@ -117,6 +127,14 @@ namespace SmartHomeAutomation.Web.Controllers.API
         private bool ManufacturerExists(Guid id)
         {
             return context.Manufacturers.Any(e => e.ManufacturerId == id);
+        }
+
+        private async Task<Manufacturer> GetExistingManufacturer(Manufacturer manufacturer)
+        {
+            var existingManufacturer = await context.Manufacturers.SingleOrDefaultAsync(m =>
+                m.ManufacturerName == manufacturer.ManufacturerName ||
+                m.ManufacturerId == manufacturer.ManufacturerId);
+            return existingManufacturer;
         }
     }
 }

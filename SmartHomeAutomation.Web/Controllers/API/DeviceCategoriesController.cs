@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SmartHomeAutomation.Web.Models;
-using SmartHomeAutomation.Web.Models.Devices;
+using SmartHomeAutomation.Entities.Models;
+using SmartHomeAutomation.Entities.Models.Device;
 
 namespace SmartHomeAutomation.Web.Controllers.API
 {
@@ -24,10 +24,10 @@ namespace SmartHomeAutomation.Web.Controllers.API
         [HttpGet]
         public IEnumerable<DeviceCategory> GetDeviceCategories()
         {
-            return context.DeviceCategories;
+            return context.DeviceCategories.Where(x => !x.IsDeleted);
         }
 
-        // GET: api/DeviceCategories/5
+        // GET: api/DeviceCategories/<GUID>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDeviceCategory([FromRoute] Guid id)
         {
@@ -46,7 +46,7 @@ namespace SmartHomeAutomation.Web.Controllers.API
             return Ok(deviceCategory);
         }
 
-        // PUT: api/DeviceCategories/5
+        // PUT: api/DeviceCategories/<GUID>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDeviceCategory([FromRoute] Guid id, [FromBody] DeviceCategory deviceCategory)
         {
@@ -72,10 +72,7 @@ namespace SmartHomeAutomation.Web.Controllers.API
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return Ok(deviceCategory);
@@ -90,13 +87,23 @@ namespace SmartHomeAutomation.Web.Controllers.API
                 return BadRequest(ModelState);
             }
 
-            context.DeviceCategories.Add(deviceCategory);
+            var existingDeviceCategory = await GetExistingDeviceCategory(deviceCategory);
+            if (existingDeviceCategory != null && existingDeviceCategory.IsDeleted)
+            {
+                context.Entry(existingDeviceCategory).State = EntityState.Modified;
+                existingDeviceCategory.IsDeleted = false;
+            }
+            else
+            {
+                context.DeviceCategories.Add(deviceCategory);
+            }
+
             await context.SaveChangesAsync();
 
             return CreatedAtAction("GetDeviceCategory", new { id = deviceCategory.DeviceCategoryId }, deviceCategory);
         }
 
-        // DELETE: api/DeviceCategories/5
+        // DELETE: api/DeviceCategories/<GUID>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDeviceCategory([FromRoute] Guid id)
         {
@@ -111,8 +118,7 @@ namespace SmartHomeAutomation.Web.Controllers.API
                 return NotFound();
             }
 
-            deviceCategory.Status = "D";
-            //context.DeviceCategories.Remove(deviceCategory);
+            deviceCategory.IsDeleted = true;
             await context.SaveChangesAsync();
 
             return Ok(deviceCategory);
@@ -121,6 +127,14 @@ namespace SmartHomeAutomation.Web.Controllers.API
         private bool DeviceCategoryExists(Guid id)
         {
             return context.DeviceCategories.Any(e => e.DeviceCategoryId == id);
+        }
+
+        private async Task<DeviceCategory> GetExistingDeviceCategory(DeviceCategory deviceCategory)
+        {
+            var existingDeviceCategory = await context.DeviceCategories.SingleOrDefaultAsync(m =>
+                m.DeviceCategoryName == deviceCategory.DeviceCategoryName ||
+                m.DeviceCategoryId == deviceCategory.DeviceCategoryId);
+            return existingDeviceCategory;
         }
     }
 }

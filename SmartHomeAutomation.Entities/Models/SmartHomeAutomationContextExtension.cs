@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using SmartHomeAutomation.Web.SeedData;
+using SmartHomeAutomation.Entities.SeedData;
 
-namespace SmartHomeAutomation.Web.Models
+namespace SmartHomeAutomation.Entities.Models
 {
     public static class SmartHomeAutomationContextExtension
     {

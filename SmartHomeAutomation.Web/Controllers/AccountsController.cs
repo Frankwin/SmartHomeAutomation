@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SmartHomeAutomation.Web.Models;
-using SmartHomeAutomation.Web.Models.Accounts;
+using SmartHomeAutomation.Entities.Models;
+using SmartHomeAutomation.Entities.Models.Account;
 
 namespace SmartHomeAutomation.Web.Controllers
 {
@@ -32,7 +32,7 @@ namespace SmartHomeAutomation.Web.Controllers
             }
 
             var account = await context.Accounts
-                .SingleOrDefaultAsync(m => m.AccountId == id);
+                .SingleOrDefaultAsync(m => m.AccountId == id && !m.IsDeleted);
             if (account == null)
             {
                 return NotFound();
@@ -72,7 +72,7 @@ namespace SmartHomeAutomation.Web.Controllers
                 return NotFound();
             }
 
-            var account = await context.Accounts.SingleOrDefaultAsync(m => m.AccountId == id);
+            var account = await context.Accounts.SingleOrDefaultAsync(m => m.AccountId == id && !m.IsDeleted);
             if (account == null)
             {
                 return NotFound();

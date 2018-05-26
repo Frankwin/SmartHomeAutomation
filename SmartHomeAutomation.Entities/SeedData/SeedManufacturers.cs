@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using SmartHomeAutomation.Web.Models;
-using SmartHomeAutomation.Web.Models.Devices;
+using SmartHomeAutomation.Entities.Models;
+using SmartHomeAutomation.Entities.Models.Device;
 
-namespace SmartHomeAutomation.Web.SeedData
+namespace SmartHomeAutomation.Entities.SeedData
 {
     internal static class SeedManufacturers
     {
