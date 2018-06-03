@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SmartHomeAutomation.Entities.Models;
-using SmartHomeAutomation.Entities.Models.Account;
 
 namespace SmartHomeAutomation.Web.Controllers
 {

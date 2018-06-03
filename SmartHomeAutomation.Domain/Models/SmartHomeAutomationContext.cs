@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using SmartHomeAutomation.Domain.Interfaces;
 using SmartHomeAutomation.Domain.Models.Device;
 
@@ -10,14 +9,6 @@ namespace SmartHomeAutomation.Domain.Models
 {
     public class SmartHomeAutomationContext : DbContext//, IDesignTimeDbContextFactory<SmartHomeAutomationContext>
     {
-//        private readonly IHttpContextAccessor httpContextAccessor;
-//
-//        public SmartHomeAutomationContext(DbContextOptions<SmartHomeAutomationContext> options, IHttpContextAccessor httpContextAccessor) 
-//            : base(options)
-//        {
-//            this.httpContextAccessor = httpContextAccessor;
-//        }
-
         public SmartHomeAutomationContext(DbContextOptions<SmartHomeAutomationContext> options)
             : base(options)
         {

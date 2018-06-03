@@ -15,14 +15,16 @@ namespace SmartHomeAutomation.Domain.Models.Device
         public string DeviceName { get; set; }
         
         [Required, Column(Order = 2)]
-        public Guid DeviceTypeId { get; set; }
         [ForeignKey("DeviceTypeId")]
-        public DeviceType DeviceType { get; set; }
+        public Guid DeviceTypeId { get; set; }
+        
+        //public DeviceType DeviceType { get; set; }
 
         [Column(Order = 3)]
-        public Guid ManufacturerId { get; set; }
         [ForeignKey("ManufacturerId")]
-        public Manufacturer Manufacturer { get; set; }
+        public Guid ManufacturerId { get; set; }
+        
+        //public Manufacturer Manufacturer { get; set; }
 
         #region Tracking Properties
         [Column(Order = 4)]

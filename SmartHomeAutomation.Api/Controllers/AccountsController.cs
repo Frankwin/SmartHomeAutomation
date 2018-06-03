@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SmartHomeAutomation.Domain.Models;
 using SmartHomeAutomation.Domain.Models.Account;
+using SmartHomeAutomation.Services.Interfaces;
 
 namespace SmartHomeAutomation.Api.Controllers
 {
@@ -13,30 +9,32 @@ namespace SmartHomeAutomation.Api.Controllers
     [Route("api/[controller]")]
     public class AccountsController : Controller
     {
-        private readonly SmartHomeAutomationContext context;
+        private readonly IAccountService accountService;
         
-        public AccountsController(SmartHomeAutomationContext context)
+        public AccountsController(IAccountService accountService)
         {
-            this.context = context;
+            this.accountService = accountService;
         }
 
-        // GET: api/Accounts
+        /// <summary>
+        /// Get all the accounts
+        /// </summary>
+        /// <returns>List of accounts in JSON format</returns>
         [HttpGet]
-        public IEnumerable<Account> GetAccounts()
+        public IActionResult GetAccounts()
         {
-            return context.Accounts;
+            return Ok(accountService.GetAll());
         }
 
-        // GET: api/Accounts/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAccount([FromRoute] Guid id)
+        /// <summary>
+        /// Get an individual account
+        /// </summary>
+        /// <param name="guid">Account GUID</param>
+        /// <returns>Account object in JSON format</returns>
+        [HttpGet("{guid}")]
+        public IActionResult GetAccount([FromRoute] Guid guid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var account = await context.Accounts.SingleOrDefaultAsync(m => m.AccountId == id);
+            var account = accountService.GetByAccountGuid(guid);
 
             if (account == null)
             {
@@ -46,78 +44,44 @@ namespace SmartHomeAutomation.Api.Controllers
             return Ok(account);
         }
 
-        // PUT: api/Accounts/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAccount([FromRoute] Guid id, [FromBody] Account account)
+        /// <summary>
+        /// Update an account
+        /// </summary>
+        /// <param name="guid">Account GUID from URL</param>
+        /// <param name="account">Account object from body</param>
+        /// <returns>Updated account object in JSON format</returns>
+        [HttpPut("{guid}")]
+        public IActionResult PutAccount([FromRoute] Guid guid, [FromBody] Account account)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != account.AccountId)
+            if (guid != account.AccountId)
             {
                 return BadRequest();
             }
 
-            context.Entry(account).State = EntityState.Modified;
-
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AccountExists(id))
-                {
-                    return NotFound();
-                }
-
-                throw;
-            }
-
-            return Ok(account);
+            return Ok(accountService.Upsert(account, User));
         }
 
-        // POST: api/Accounts
+        /// <summary>
+        /// Create a new account
+        /// </summary>
+        /// <param name="account">Account object from body</param>
+        /// <returns>Newly created account object in JSON format</returns>
         [HttpPost]
-        public async Task<IActionResult> PostAccount([FromBody] Account account)
+        public IActionResult PostAccount([FromBody] Account account)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            context.Accounts.Add(account);
-            await context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAccount", new { id = account.AccountId }, account);
+            return Ok(accountService.Upsert(account, User));
         }
 
-        // DELETE: api/Accounts/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAccount([FromRoute] Guid id)
+        /// <summary>
+        /// Delete an account
+        /// </summary>
+        /// <param name="guid">Account GUID from URL</param>
+        /// <returns>Deleted account object in JSON format</returns>
+        [HttpDelete("{guid}")]
+        public IActionResult DeleteAccount([FromRoute] Guid guid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var account = await context.Accounts.SingleOrDefaultAsync(m => m.AccountId == id);
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            context.Accounts.Remove(account);
-            await context.SaveChangesAsync();
-
+            var account = accountService.SoftDelete(guid, User);
             return Ok(account);
-        }
-
-        private bool AccountExists(Guid id)
-        {
-            return context.Accounts.Any(e => e.AccountId == id);
         }
     }
 }

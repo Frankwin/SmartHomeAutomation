@@ -60,8 +60,10 @@ namespace SmartHomeAutomation.Api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // Register application services
-            services.AddTransient<ISmartHomeAutomationService, SmartHomeAutomationService>();
+            services.AddScoped<ISmartHomeAutomationService, SmartHomeAutomationService>();
             services.AddScoped<IManufacturerService, ManufacturerService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IDeviceCategoryService, DeviceCategoryService>();
         }
 
 
@@ -77,6 +79,15 @@ namespace SmartHomeAutomation.Api
 
             if (env.IsDevelopment())
             {
+                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    if (!serviceScope.ServiceProvider.GetService<SmartHomeAutomationContext>().AllMigrationsApplied())
+                    {
+                        serviceScope.ServiceProvider.GetService<SmartHomeAutomationContext>().Database.Migrate();
+                        serviceScope.ServiceProvider.GetService<SmartHomeAutomationContext>().EnsureSeeded();
+                    }
+                }
+
                 app.UseDeveloperExceptionPage();
             }
 

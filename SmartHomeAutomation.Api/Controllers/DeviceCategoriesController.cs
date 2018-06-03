@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SmartHomeAutomation.Domain.Models;
 using SmartHomeAutomation.Domain.Models.Device;
+using SmartHomeAutomation.Services.Interfaces;
 
 namespace SmartHomeAutomation.Api.Controllers
 {
@@ -13,31 +9,32 @@ namespace SmartHomeAutomation.Api.Controllers
     [Route("api/[controller]")]
     public class DeviceCategoriesController : Controller
     {
-        private readonly SmartHomeAutomationContext context;
+        private readonly IDeviceCategoryService deviceCategoryService;
 
-        public DeviceCategoriesController(SmartHomeAutomationContext context)
+        public DeviceCategoriesController(IDeviceCategoryService deviceCategoryService)
         {
-            this.context = context;
+            this.deviceCategoryService = deviceCategoryService;
         }
 
-        // GET: api/DeviceCategories
+        /// <summary>
+        /// Get all the device categories
+        /// </summary>
+        /// <returns>List of device categories in JSON format</returns>
         [HttpGet]
-        public IEnumerable<DeviceCategory> GetDeviceCategories()
+        public IActionResult GetDeviceCategories()
         {
-            return context.DeviceCategories;
+            return Ok(deviceCategoryService.GetAll());
         }
 
-        // GET: api/DeviceCategories/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetDeviceCategory([FromRoute] Guid id)
+        /// <summary>
+        /// Get an individual device category
+        /// </summary>
+        /// <param name="guid">Device Category GUID</param>
+        /// <returns>Device Category object in JSON format</returns>
+        [HttpGet("{guid}")]
+        public IActionResult GetDeviceCategory([FromRoute] Guid guid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var deviceCategory = await context.DeviceCategories.SingleOrDefaultAsync(m => m.DeviceCategoryId == id);
-
+            var deviceCategory = deviceCategoryService.GetByDeviceCategoryGuid(guid);
             if (deviceCategory == null)
             {
                 return NotFound();
@@ -46,77 +43,45 @@ namespace SmartHomeAutomation.Api.Controllers
             return Ok(deviceCategory);
         }
 
-        // PUT: api/DeviceCategories/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDeviceCategory([FromRoute] Guid id, [FromBody] DeviceCategory deviceCategory)
+        /// <summary>
+        /// Update a device category
+        /// </summary>
+        /// <param name="guid">Device Category GUID from URL</param>
+        /// <param name="deviceCategory">Device Category object from body</param>
+        /// <returns>Updated device category object in JSON format</returns>
+        [HttpPut("{guid}")]
+        public IActionResult PutDeviceCategory([FromRoute] Guid guid, [FromBody] DeviceCategory deviceCategory)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != deviceCategory.DeviceCategoryId)
+            if (guid != deviceCategory.DeviceCategoryId)
             {
                 return BadRequest();
             }
 
-            context.Entry(deviceCategory).State = EntityState.Modified;
-
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DeviceCategoryExists(id))
-                {
-                    return NotFound();
-                }
-                throw;
-            }
-
-            return Ok(deviceCategory);
+            return Ok(deviceCategoryService.Upsert(deviceCategory, User));
         }
 
-        // POST: api/DeviceCategories
+
+        /// <summary>
+        /// Create a new device category
+        /// </summary>
+        /// <param name="deviceCategory">Device Category object from body</param>
+        /// <returns>Newly created device category object in JSON format</returns>
         [HttpPost]
-        public async Task<IActionResult> PostDeviceCategory([FromBody] DeviceCategory deviceCategory)
+        public IActionResult PostDeviceCategory([FromBody] DeviceCategory deviceCategory)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            context.DeviceCategories.Add(deviceCategory);
-            await context.SaveChangesAsync();
-
-            return CreatedAtAction("GetDeviceCategory", new { id = deviceCategory.DeviceCategoryId }, deviceCategory);
+            return Ok(deviceCategoryService.Upsert(deviceCategory, User));
         }
 
-        // DELETE: api/DeviceCategories/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDeviceCategory([FromRoute] Guid id)
+        /// <summary>
+        /// Delete a device category
+        /// </summary>
+        /// <param name="guid">Device Category GUID from URL</param>
+        /// <returns>Deleted device category object in JSON format</returns>
+        [HttpDelete("{guid}")]
+        public IActionResult DeleteDeviceCategory([FromRoute] Guid guid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var deviceCategory = await context.DeviceCategories.SingleOrDefaultAsync(m => m.DeviceCategoryId == id);
-            if (deviceCategory == null)
-            {
-                return NotFound();
-            }
-
-            context.DeviceCategories.Remove(deviceCategory);
-            await context.SaveChangesAsync();
-
+            var deviceCategory = deviceCategoryService.SoftDelete(guid, User);
             return Ok(deviceCategory);
-        }
-
-        private bool DeviceCategoryExists(Guid id)
-        {
-            return context.DeviceCategories.Any(e => e.DeviceCategoryId == id);
         }
     }
 }

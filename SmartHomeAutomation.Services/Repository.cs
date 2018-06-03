@@ -48,7 +48,7 @@ namespace SmartHomeAutomation.Services
 
         public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            IQueryable<TEntity> queryable = DbSet.AsNoTracking();
+            var queryable = DbSet.AsNoTracking();
 
             return includeProperties.Aggregate(queryable,
                 (current, includeProperty) => current.Include(includeProperty));
