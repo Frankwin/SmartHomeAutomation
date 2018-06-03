@@ -36,11 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartHomeAutomation.Entities\SmartHomeAutomation.Entities.csproj" />
-    <ProjectReference Include="..\SmartHomeAutomation.Services\SmartHomeAutomation.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\addaccount\addaccount.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\getaccount\getaccount.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\accountservice.service.ts" />
@@ -48,6 +43,10 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartHomeAutomation.Entities\SmartHomeAutomation.Domain.csproj" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

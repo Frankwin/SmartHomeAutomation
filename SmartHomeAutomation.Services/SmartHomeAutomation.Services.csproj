@@ -5,12 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Account\" />
-    <Folder Include="User\" />
+    <ProjectReference Include="..\SmartHomeAutomation.Domain\SmartHomeAutomation.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartHomeAutomation.Entities\SmartHomeAutomation.Entities.csproj" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 
 </Project>
