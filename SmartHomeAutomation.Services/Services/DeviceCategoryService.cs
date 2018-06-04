@@ -26,7 +26,7 @@ namespace SmartHomeAutomation.Services.Services
 
         public DeviceCategory Upsert(DeviceCategory deviceCategory, IPrincipal userPrincipal)
         {
-            var existingDeviceCategory = UniqueNameCheck(deviceCategory.DeviceCategoryName);
+            var existingDeviceCategory = CheckForExistingDeviceCategory(deviceCategory.DeviceCategoryName);
             if (existingDeviceCategory != null)
             {
                 if (existingDeviceCategory.IsDeleted)
@@ -36,7 +36,7 @@ namespace SmartHomeAutomation.Services.Services
                 }
                 else
                 {
-                    throw new DuplicateNameException($"A manufacturer with name '{deviceCategory.DeviceCategoryName}' already exists");
+                    throw new DuplicateNameException($"A device category with name '{deviceCategory.DeviceCategoryName}' already exists");
                 }
             }
 
@@ -69,7 +69,7 @@ namespace SmartHomeAutomation.Services.Services
             }
         }
 
-        public DeviceCategory UniqueNameCheck(string name)
+        public DeviceCategory CheckForExistingDeviceCategory(string name)
         {
             using (var context = new SmartHomeAutomationContext())
             {

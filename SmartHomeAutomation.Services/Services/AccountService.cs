@@ -15,15 +15,6 @@ namespace SmartHomeAutomation.Services.Services
         {
         }
 
-        public Account GetByAccountGuid(Guid guid)
-        {
-            using (var context = new SmartHomeAutomationContext())
-            {
-                return context.Accounts
-                    .SingleOrDefault(x => x.AccountId == guid);
-            }
-        }
-
         public Account Upsert(Account account, IPrincipal userPrincipal)
         {
             var existingAccount = CheckForExistingAccountName(account.AccountName);

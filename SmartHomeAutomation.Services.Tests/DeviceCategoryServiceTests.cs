@@ -8,16 +8,10 @@ namespace SmartHomeAutomation.Services.Tests
     public class DeviceCategoryServiceTests : TestBase
     {
         [TestInitialize]
-        public void TestInitialize()
-        {
-            TestDeviceCategory = CreateTestDeviceCategory();
-        }
+        public void TestInitialize() => TestDeviceCategory = CreateTestDeviceCategory();
 
         [TestCleanup]
-        public void TestCleanup()
-        {
-            DeleteTestAccount(TestDeviceCategory);
-        }
+        public void TestCleanup() => DeleteTestDeviceCategory(TestDeviceCategory);
 
         [TestMethod]        
         public void CreateNewAccountWithUpsertTest()
@@ -35,12 +29,12 @@ namespace SmartHomeAutomation.Services.Tests
         [TestMethod]        
         public void SoftDeleteAccountTest()
         {
-            var foundAccounts = DeviceCategoryService.Search("TestDeviceCategory").ToList();
+            var foundDeviceCategories = DeviceCategoryService.Search(TestDeviceCategoryName).ToList();
 
-            Assert.AreEqual(1, foundAccounts.Count);
-            DeviceCategoryService.SoftDelete(foundAccounts.First().DeviceCategoryId, TestUser);
+            Assert.AreEqual(1, foundDeviceCategories.Count);
+            DeviceCategoryService.SoftDelete(foundDeviceCategories.First().DeviceCategoryId, TestUser);
             
-            var softDeletedAccount = DeviceCategoryService.Search("TestDeviceCategory").ToList();
+            var softDeletedAccount = DeviceCategoryService.Search(TestDeviceCategoryName).ToList();
             Assert.AreEqual(1,softDeletedAccount.Count);
             Assert.IsTrue(softDeletedAccount.First().IsDeleted);
         }
@@ -48,7 +42,7 @@ namespace SmartHomeAutomation.Services.Tests
         [TestMethod]
         public void UniqueNameCheckDuplicateAccount()
         {
-            var uniqueName = DeviceCategoryService.UniqueNameCheck("TestDeviceCategory");
+            var uniqueName = DeviceCategoryService.CheckForExistingDeviceCategory(TestDeviceCategoryName);
 
             Assert.AreEqual(TestDeviceCategory.DeviceCategoryName, uniqueName.DeviceCategoryName);
         }
@@ -56,7 +50,7 @@ namespace SmartHomeAutomation.Services.Tests
         [TestMethod]
         public void UniqueNameCheckNonDuplicateAccount()
         {
-            var uniqueName = DeviceCategoryService.UniqueNameCheck("TestingAccount");
+            var uniqueName = DeviceCategoryService.CheckForExistingDeviceCategory("Testing Device Category");
 
             Assert.IsNull(uniqueName);
         }
@@ -64,9 +58,9 @@ namespace SmartHomeAutomation.Services.Tests
         [TestMethod]
         public void UpdateAccountUsingUpsert()
         {
-            TestDeviceCategory.DeviceCategoryName = "TestDeviceCategory updated";
+            TestDeviceCategory.DeviceCategoryName = TestDeviceCategoryName + " updated";
             DeviceCategoryService.Upsert(TestDeviceCategory, TestUser);
-            var foundAccounts = DeviceCategoryService.Search("TestDeviceCategory updated").ToList();
+            var foundAccounts = DeviceCategoryService.Search(TestDeviceCategoryName + " updated").ToList();
 
             Assert.AreEqual(1, foundAccounts.Count);
             Assert.AreEqual(foundAccounts.First().DeviceCategoryName, TestDeviceCategory.DeviceCategoryName);

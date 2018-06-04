@@ -34,7 +34,7 @@ namespace SmartHomeAutomation.Api.Controllers
         [HttpGet("{guid}")]
         public IActionResult GetAccount([FromRoute] Guid guid)
         {
-            var account = accountService.GetByAccountGuid(guid);
+            var account = accountService.GetByGuid(guid);
 
             if (account == null)
             {

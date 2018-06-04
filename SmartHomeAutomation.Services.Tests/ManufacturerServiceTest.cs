@@ -8,10 +8,7 @@ namespace SmartHomeAutomation.Services.Tests
     public class ManufacturerServiceTests : TestBase
     {
         [TestInitialize]
-        public void TestInitialize()
-        {
-            TestManufacturer = CreateTestManufacturer();
-        }
+        public void TestInitialize() => TestManufacturer = CreateTestManufacturer();
 
         [TestCleanup]
         public void TestCleanup()
@@ -35,12 +32,12 @@ namespace SmartHomeAutomation.Services.Tests
         [TestMethod]        
         public void SoftDeleteManufacturerTest()
         {
-            var foundManufacturers = ManufacturerService.Search("Test Manufacturer").ToList();
+            var foundManufacturers = ManufacturerService.Search(TestManufacturerName).ToList();
 
             Assert.AreEqual(1, foundManufacturers.Count);
             ManufacturerService.SoftDelete(foundManufacturers.First().ManufacturerId, TestUser);
             
-            var softDeletedManufacturer = ManufacturerService.Search("Test Manufacturer").ToList();
+            var softDeletedManufacturer = ManufacturerService.Search(TestManufacturerName).ToList();
             Assert.AreEqual(1,softDeletedManufacturer.Count);
             Assert.IsTrue(softDeletedManufacturer.First().IsDeleted);
         }
@@ -48,7 +45,7 @@ namespace SmartHomeAutomation.Services.Tests
         [TestMethod]
         public void UniqueNameCheckDuplicateManufacturer()
         {
-            var uniqueName = ManufacturerService.CheckForExistingManufacturerName("Test Manufacturer");
+            var uniqueName = ManufacturerService.CheckForExistingManufacturerName(TestManufacturerName);
 
             Assert.AreEqual(TestManufacturer.ManufacturerName, uniqueName.ManufacturerName);
         }
@@ -64,9 +61,9 @@ namespace SmartHomeAutomation.Services.Tests
         [TestMethod]
         public void UpdateManufacturerUsingUpsert()
         {
-            TestManufacturer.ManufacturerName = "Test Manufacturer updated";
+            TestManufacturer.ManufacturerName = TestManufacturerName + " updated";
             ManufacturerService.Upsert(TestManufacturer, TestUser);
-            var foundManufacturers = ManufacturerService.Search("Test Manufacturer updated").ToList();
+            var foundManufacturers = ManufacturerService.Search(TestManufacturerName + " updated").ToList();
 
             Assert.AreEqual(1, foundManufacturers.Count);
             Assert.AreEqual(foundManufacturers.First().ManufacturerName, TestManufacturer.ManufacturerName);

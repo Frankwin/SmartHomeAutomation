@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SmartHomeAutomation.Domain.Enums;
@@ -13,6 +14,8 @@ namespace SmartHomeAutomation.Domain.Models.Account
         public Guid AccountId { get; set; }
         [MaxLength(50), Required, Column(Order = 1)]
         public string AccountName { get; set; }
+
+        public ICollection<User.User> Users { get; set; }
 
         [NotMapped]
         public ObjectState ObjectState { get; set; }
