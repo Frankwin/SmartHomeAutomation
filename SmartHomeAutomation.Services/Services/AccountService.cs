@@ -26,7 +26,7 @@ namespace SmartHomeAutomation.Services.Services
 
         public Account Upsert(Account account, IPrincipal userPrincipal)
         {
-            var existingAccount = UniqueNameCheck(account.AccountName);
+            var existingAccount = CheckForExistingAccountName(account.AccountName);
             if (existingAccount != null)
             {
                 if (existingAccount.IsDeleted)
@@ -69,11 +69,12 @@ namespace SmartHomeAutomation.Services.Services
             }
         }
 
-        public Account UniqueNameCheck(string name)
+        public Account CheckForExistingAccountName(string name)
         {
             using (var context = new SmartHomeAutomationContext())
             {
-                return context.Accounts.FirstOrDefault(x => x.AccountName.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+                var existingAccount = context.Accounts.FirstOrDefault(x => x.AccountName.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+                return existingAccount;
             }
         }
     }

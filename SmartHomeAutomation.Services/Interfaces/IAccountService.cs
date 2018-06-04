@@ -9,5 +9,6 @@ namespace SmartHomeAutomation.Services.Interfaces
         Account GetByAccountGuid(Guid guid);
         Account Upsert(Account account, IPrincipal userPrincipal);
         Account SoftDelete(Guid guid, IPrincipal userPrincipal);
+        Account CheckForExistingAccountName(string name);
     }
 }

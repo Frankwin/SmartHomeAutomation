@@ -43,7 +43,7 @@ namespace SmartHomeAutomation.Services.Services
 
         public Manufacturer Upsert(Manufacturer manufacturer, IPrincipal userPrincipal)
         {
-            var existingManufacturer = UniqueNameCheck(manufacturer.ManufacturerName);
+            var existingManufacturer = CheckForExistingManufacturerName(manufacturer.ManufacturerName);
             if (existingManufacturer != null)
             {
                 if (existingManufacturer.IsDeleted)
@@ -87,7 +87,7 @@ namespace SmartHomeAutomation.Services.Services
             }
         }
 
-        public Manufacturer UniqueNameCheck(string name)
+        public Manufacturer CheckForExistingManufacturerName(string name)
         {
             using (var context = new SmartHomeAutomationContext())
             {

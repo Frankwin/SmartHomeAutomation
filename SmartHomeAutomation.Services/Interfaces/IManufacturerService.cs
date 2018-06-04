@@ -9,6 +9,6 @@ namespace SmartHomeAutomation.Services.Interfaces
         Manufacturer GetByManufacturerGuid(Guid manufacturerGuid);
         Manufacturer Upsert(Manufacturer manufacturer, IPrincipal userPrincipal);
         Manufacturer SoftDelete(Guid guid, IPrincipal userPrincipal);
-        Manufacturer UniqueNameCheck(string name);
+        Manufacturer CheckForExistingManufacturerName(string name);
     }
 }

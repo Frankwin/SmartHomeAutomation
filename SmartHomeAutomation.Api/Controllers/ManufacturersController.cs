@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SmartHomeAutomation.Domain.Models.Device;
 using SmartHomeAutomation.Services.Interfaces;
 

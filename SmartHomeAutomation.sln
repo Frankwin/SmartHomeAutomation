@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHomeAutomation.Web", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHomeAutomation.Domain", "SmartHomeAutomation.Domain\SmartHomeAutomation.Domain.csproj", "{6DF71B0E-5513-477C-B9B0-32F4E6B81F47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHomeAutomation.Api", "SmartHomeAutomation.Api\SmartHomeAutomation.Api.csproj", "{4AF37139-0BCA-4CCE-B32B-7F03B6EA1D19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHomeAutomation.Api", "SmartHomeAutomation.Api\SmartHomeAutomation.Api.csproj", "{4AF37139-0BCA-4CCE-B32B-7F03B6EA1D19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHomeAutomation.Services", "SmartHomeAutomation.Services\SmartHomeAutomation.Services.csproj", "{0B223573-CB3D-4848-919A-E4E98BB39FEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHomeAutomation.Services", "SmartHomeAutomation.Services\SmartHomeAutomation.Services.csproj", "{0B223573-CB3D-4848-919A-E4E98BB39FEB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHomeAutomation.Services.Tests", "SmartHomeAutomation.Services.Tests\SmartHomeAutomation.Services.Tests.csproj", "{34EEA4A2-5E97-431D-8939-E16E6082E8E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0B223573-CB3D-4848-919A-E4E98BB39FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B223573-CB3D-4848-919A-E4E98BB39FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B223573-CB3D-4848-919A-E4E98BB39FEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34EEA4A2-5E97-431D-8939-E16E6082E8E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34EEA4A2-5E97-431D-8939-E16E6082E8E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34EEA4A2-5E97-431D-8939-E16E6082E8E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34EEA4A2-5E97-431D-8939-E16E6082E8E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
