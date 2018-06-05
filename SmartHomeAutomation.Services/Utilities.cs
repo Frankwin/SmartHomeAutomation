@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using SmartHomeAutomation.Services.Helpers;
 
 namespace SmartHomeAutomation.Services
 {
@@ -13,18 +14,18 @@ namespace SmartHomeAutomation.Services
         public static Expression<Func<TEntity, bool>> BuildEqualsExpression<TEntity>(string propertyName, object inputValue)
         {
             var item = Expression.Parameter(typeof(TEntity), "entity");
-            var lambda = BuildEqualsExpression<TEntity>(item, new Helper { PropertyName = propertyName, InputValue = inputValue });
+            var lambda = BuildEqualsExpression<TEntity>(item, new UtilityHelper { PropertyName = propertyName, InputValue = inputValue });
 
             return lambda;
         }
 
-        public static IEnumerable<Expression<Func<TEntity, bool>>> BuildEqualsExpression<TEntity>(params Helper[] inputs)
+        public static IEnumerable<Expression<Func<TEntity, bool>>> BuildEqualsExpression<TEntity>(params UtilityHelper[] inputs)
         {
             var paramExpression = Expression.Parameter(typeof(TEntity), "entity");
             return inputs.Select(input => BuildEqualsExpression<TEntity>(paramExpression, input));
         }
 
-        public static IEnumerable<Expression<Func<TEntity, bool>>> BuildContainsExpression<TEntity>(params Helper[] inputs)
+        public static IEnumerable<Expression<Func<TEntity, bool>>> BuildContainsExpression<TEntity>(params UtilityHelper[] inputs)
         {
             var paramExpression = Expression.Parameter(typeof(TEntity), "entity");
             return inputs.Select(input => BuildContainsExpression<TEntity>(paramExpression, input));
@@ -39,7 +40,7 @@ namespace SmartHomeAutomation.Services
                     enumerable.ElementAt(0).Parameters);
         }
 
-        private static Expression<Func<TEntity, bool>> BuildContainsExpression<TEntity>(ParameterExpression parameterExpression, Helper input)
+        private static Expression<Func<TEntity, bool>> BuildContainsExpression<TEntity>(ParameterExpression parameterExpression, UtilityHelper input)
         {
             var propertyExp = Expression.Property(parameterExpression, input.PropertyName);
             var someValue = Expression.Constant(input.InputValue, typeof(string));
@@ -49,7 +50,7 @@ namespace SmartHomeAutomation.Services
             return Expression.Lambda<Func<TEntity, bool>>(containsMethodExp, parameterExpression);
         }
 
-        private static Expression<Func<TEntity, bool>> BuildEqualsExpression<TEntity>(ParameterExpression parameterExpression, Helper input)
+        private static Expression<Func<TEntity, bool>> BuildEqualsExpression<TEntity>(ParameterExpression parameterExpression, UtilityHelper input)
         {
             var prop = Expression.Property(parameterExpression, input.PropertyName);
             var value = Expression.Constant(input.InputValue);
@@ -57,12 +58,6 @@ namespace SmartHomeAutomation.Services
             var lambda = Expression.Lambda<Func<TEntity, bool>>(equal, parameterExpression);
 
             return lambda;
-        }
-
-        public class Helper
-        {
-            public string PropertyName { get; set; }
-            public object InputValue { get; set; }
         }
     }
 }

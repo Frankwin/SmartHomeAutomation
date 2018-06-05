@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,7 +21,7 @@ namespace SmartHomeAutomation.Services.Tests
         [TestMethod]        
         public void CreateNewManufacturerWithUpsertTest()
         {
-            var newManufacturer = new Manufacturer {ManufacturerName = "New Upsert Test Manufacturer"};
+            var newManufacturer = new Manufacturer { ManufacturerName = "New Upsert Test Manufacturer"};
             ManufacturerService.Upsert(newManufacturer, TestUserPrincipal);
             var foundManufacturers = ManufacturerService.Search("New Upsert Test Manufacturer").ToList();
 
@@ -76,11 +77,11 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
-        public void UniqueNameCheckDuplicateManufacturerTest()
+        [ExpectedException(typeof(ArgumentException))]
+        public void SoftDeleteManufacturerThatDoesNotExistTest()
         {
-            var uniqueName = ManufacturerService.CheckForExistingManufacturerName(TestManufacturerName);
-
-            Assert.AreEqual(TestManufacturer.ManufacturerName, uniqueName.ManufacturerName);
+            var guid = Guid.NewGuid();
+            ManufacturerService.SoftDelete(guid, TestUserPrincipal);
         }
 
         [TestMethod]

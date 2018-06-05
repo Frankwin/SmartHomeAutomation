@@ -1,10 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SmartHomeAutomation.Services.Tests
 {
     [TestClass]
-    public class GenericServiceTests : TestBase
+    public class BaseServiceTests : TestBase
     {
 
         [TestInitialize]
@@ -65,10 +66,27 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
+        public void SearchAllByPageWithNoResultsTest()
+        {
+            var accountByPage = AccountService.SearchByPage("Bob Marley", 5, 1, "AccountName", "ASC");
+            Assert.IsTrue(accountByPage.Collection.Count == 0);
+            Assert.IsTrue(accountByPage.TotalCount == 0);
+            Assert.IsTrue(accountByPage.TotalPages.Equals(0.0));
+        }
+
+        [TestMethod]
         public void GetByGuidTest()
         {
             var account = AccountService.GetByGuid(TestAccount.AccountId);
             Assert.AreEqual(account.AccountName, TestAccount.AccountName);
+        }
+
+        [TestMethod]
+        public void GetByNonExistingGuidTest()
+        {
+            var guid = Guid.NewGuid();
+            var account = AccountService.GetByGuid(guid);
+            Assert.IsNull(account);
         }
 
         [TestMethod]

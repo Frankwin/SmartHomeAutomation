@@ -9,7 +9,7 @@ using SmartHomeAutomation.Services.Interfaces;
 
 namespace SmartHomeAutomation.Services.Services
 {
-    public class AccountService : Service<Account, SmartHomeAutomationContext>, IAccountService
+    public class AccountService : BaseService<Account, SmartHomeAutomationContext>, IAccountService
     {
         public AccountService(ISmartHomeAutomationService smartHomeAutomationService) : base(smartHomeAutomationService.ConnectionString)
         {

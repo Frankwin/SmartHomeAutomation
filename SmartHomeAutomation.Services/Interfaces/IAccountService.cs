@@ -4,7 +4,7 @@ using SmartHomeAutomation.Domain.Models.Account;
 
 namespace SmartHomeAutomation.Services.Interfaces
 {
-    public interface IAccountService : IReadService<Account>, IWriteService<Account>
+    public interface IAccountService : IReaderService<Account>, IWriterService<Account>
     {
         Account Upsert(Account account, IPrincipal userPrincipal);
         Account SoftDelete(Guid guid, IPrincipal userPrincipal);

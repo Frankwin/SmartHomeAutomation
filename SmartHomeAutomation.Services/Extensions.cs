@@ -9,7 +9,7 @@ namespace SmartHomeAutomation.Services
         /// <summary>
         /// Saves the context with the help of `StateHelper`.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="context">DBContext</param>
         public static void SaveWithState(this DbContext context)
         {
             context.ApplyStateChanges();
@@ -19,9 +19,9 @@ namespace SmartHomeAutomation.Services
         /// <summary>
         /// Attaches the entity to the `IDbSet` only if it is not already attached.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dbSet"></param>
-        /// <param name="entity"></param>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="dbSet">Database Set</param>
+        /// <param name="entity">Entity</param>
         public static void SafeAttach<T>(this DbSet<T> dbSet, T entity) where T : class
         {
             if (!CheckIfAttached(dbSet, entity))

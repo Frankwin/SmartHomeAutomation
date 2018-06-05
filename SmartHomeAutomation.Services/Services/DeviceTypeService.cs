@@ -9,19 +9,10 @@ using SmartHomeAutomation.Services.Interfaces;
 
 namespace SmartHomeAutomation.Services.Services
 {
-    public class DeviceTypeService : Service<DeviceType, SmartHomeAutomationContext>, IDeviceTypeService
+    public class DeviceTypeService : BaseService<DeviceType, SmartHomeAutomationContext>, IDeviceTypeService
     {
         public DeviceTypeService(ISmartHomeAutomationService smartHomeAutomationService) : base(smartHomeAutomationService.ConnectionString)
         {
-        }
-
-        public DeviceType GetByDeviceTypeGuid(Guid guid)
-        {
-            using (var context = new SmartHomeAutomationContext())
-            {
-                return context.DeviceTypes
-                    .SingleOrDefault(x => x.DeviceTypeId == guid);
-            }
         }
 
         public DeviceType Upsert(DeviceType deviceType, IPrincipal userPrincipal)

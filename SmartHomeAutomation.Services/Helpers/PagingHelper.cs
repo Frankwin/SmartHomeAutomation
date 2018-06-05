@@ -6,7 +6,7 @@ namespace SmartHomeAutomation.Services.Helpers
 {
     public static class PagingHelper
     {
-        public static PagingResult GetPageResult<TEntity, TContext>(TContext context, IQueryable<TEntity> query,
+        public static PageResult GetPageResult<TEntity, TContext>(TContext context, IQueryable<TEntity> query,
             int pageSize, int pageNumber, string orderBy = "", string direction = "asc") where TEntity : class where TContext : DbContext
         {
 
@@ -20,7 +20,7 @@ namespace SmartHomeAutomation.Services.Helpers
 
             var collection = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList<dynamic>();
 
-            var result = new PagingResult
+            var result = new PageResult
             {
                 TotalCount = totalCount,
                 TotalPages = totalPages,

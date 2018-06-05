@@ -6,7 +6,7 @@ using SmartHomeAutomation.Services.Interfaces;
 namespace SmartHomeAutomation.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Users")]
+    [Route("api/[controller]")]
     public class UsersController : Controller
     {
         private readonly IUserService userService;

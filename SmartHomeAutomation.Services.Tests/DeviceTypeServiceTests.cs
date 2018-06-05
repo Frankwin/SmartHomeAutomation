@@ -71,10 +71,10 @@ namespace SmartHomeAutomation.Services.Tests
         [TestMethod]
         public void InsertDeviceTypeWithNameThatIsSoftDeletedTest()
         {
-            TestDeviceCategory.IsDeleted = true;
+            TestDeviceType.IsDeleted = true;
             DeviceTypeService.Update(TestDeviceType);
 
-            var newDeviceType = new DeviceType { DeviceTypeName = TestDeviceCategoryName, DeviceCategoryId = TestDeviceCategory.DeviceCategoryId};
+            var newDeviceType = new DeviceType { DeviceTypeName = TestDeviceTypeName, DeviceCategoryId = TestDeviceCategory.DeviceCategoryId};
             DeviceTypeService.Upsert(newDeviceType, TestUserPrincipal);
 
             var foundDeviceTypes = DeviceTypeService.Search(TestDeviceTypeName).ToList();

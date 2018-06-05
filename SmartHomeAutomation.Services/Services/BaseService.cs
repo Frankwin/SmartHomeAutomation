@@ -9,13 +9,13 @@ using SmartHomeAutomation.Services.Interfaces;
 
 namespace SmartHomeAutomation.Services.Services
 {
-    public class Service<TEntity, TContext> : IReadService<TEntity>, IWriteService<TEntity>
+    public class BaseService<TEntity, TContext> : IReaderService<TEntity>, IWriterService<TEntity>
         where TEntity : class, IObjectWithState
         where TContext : DbContext, new()
     {
         protected string ConnectionString { get; }
 
-        public Service(string connectionString)
+        public BaseService(string connectionString)
         {
             ConnectionString = connectionString;
         }
@@ -66,7 +66,7 @@ namespace SmartHomeAutomation.Services.Services
             }
         }
 
-        public PagingResult SearchByPage(string value, int pageSize, int pageNumber, string orderBy, string direction)
+        public PageResult SearchByPage(string value, int pageSize, int pageNumber, string orderBy, string direction)
         {
             using (var context = CreateContext(ConnectionString))
             {
@@ -76,7 +76,7 @@ namespace SmartHomeAutomation.Services.Services
             }
         }
 
-        public PagingResult GetByPage(int pageSize, int pageNumber, string orderBy, string direction)
+        public PageResult GetByPage(int pageSize, int pageNumber, string orderBy, string direction)
         {
             using (var context = CreateContext(ConnectionString))
             {
@@ -86,7 +86,7 @@ namespace SmartHomeAutomation.Services.Services
             }
         }
 
-        public PagingResult GetByPropertyByPage(string propertyName, int id, int pageSize, int pageNumber, string orderBy, string direction)
+        public PageResult GetByPropertyByPage(string propertyName, int id, int pageSize, int pageNumber, string orderBy, string direction)
         {
             using (var context = CreateContext(ConnectionString))
             {

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartHomeAutomation.Domain.Interfaces;
 using SmartHomeAutomation.Domain.Models.Device;
+using SmartHomeAutomation.Domain.Models.Settings;
 
 namespace SmartHomeAutomation.Domain.Models
 {
@@ -28,6 +29,9 @@ namespace SmartHomeAutomation.Domain.Models
         public DbSet<DeviceCategory> DeviceCategories { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
         public DbSet<Device.Device> Devices { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<OwnedDevice> OwnedDevices { get; set;}
+        public DbSet<DeviceSetting> DeviceSettings { get; set; }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {

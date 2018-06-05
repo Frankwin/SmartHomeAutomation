@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using SmartHomeAutomation.Domain.Enums;
 using SmartHomeAutomation.Domain.Interfaces;
+using SmartHomeAutomation.Services.Helpers;
 
 namespace SmartHomeAutomation.Services
 {
@@ -57,7 +58,7 @@ namespace SmartHomeAutomation.Services
         public IEnumerable<TEntity> Search(string value)
         {
             var stringProperties = typeof(TEntity).GetProperties().Where(x => x.PropertyType == typeof(string));
-            var helpers = stringProperties.Select(x => new Utilities.Helper { PropertyName = x.Name, InputValue = value });
+            var helpers = stringProperties.Select(x => new UtilityHelper { PropertyName = x.Name, InputValue = value });
             var expressions = Utilities.BuildContainsExpression<TEntity>(helpers.ToArray());
             var searchExpression = Utilities.CombineExpressions(expressions);
 
@@ -68,7 +69,7 @@ namespace SmartHomeAutomation.Services
         public IQueryable<TEntity> SearchQuery(string value)
         {
             var stringProperties = typeof(TEntity).GetProperties().Where(x => x.PropertyType == typeof(string));
-            var helpers = stringProperties.Select(x => new Utilities.Helper { PropertyName = x.Name, InputValue = value });
+            var helpers = stringProperties.Select(x => new UtilityHelper { PropertyName = x.Name, InputValue = value });
             var expressions = Utilities.BuildContainsExpression<TEntity>(helpers.ToArray());
             var searchExpression = Utilities.CombineExpressions(expressions);
             var result = FindBy(searchExpression).AsQueryable();

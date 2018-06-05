@@ -2,7 +2,7 @@
 
 namespace SmartHomeAutomation.Services
 {
-    public class PagingResult
+    public class PageResult
     {
         public int TotalCount { get; set; }
         public double TotalPages { get; set; }

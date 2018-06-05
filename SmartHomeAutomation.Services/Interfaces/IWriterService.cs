@@ -2,7 +2,7 @@
 
 namespace SmartHomeAutomation.Services.Interfaces
 {
-    public interface IWriteService<in TEntity> where TEntity : class
+    public interface IWriterService<in TEntity> where TEntity : class
     {
         void Insert(TEntity entity);
         void Update(TEntity entity);

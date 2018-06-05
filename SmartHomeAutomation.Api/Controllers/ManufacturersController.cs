@@ -34,7 +34,7 @@ namespace SmartHomeAutomation.Api.Controllers
         [HttpGet("{guid}", Name="GetManufacturer")]
         public IActionResult GetManufacturer([FromRoute] Guid guid)
         {
-            var manufacturer = manufacturerService.GetByManufacturerGuid(guid);
+            var manufacturer = manufacturerService.GetByGuid(guid);
             if (manufacturer == null)
             {
                 return NotFound();

@@ -9,7 +9,7 @@ using SmartHomeAutomation.Services.Interfaces;
 
 namespace SmartHomeAutomation.Services.Services
 {
-    public class DeviceCategoryService : Service<DeviceCategory, SmartHomeAutomationContext>, IDeviceCategoryService
+    public class DeviceCategoryService : BaseService<DeviceCategory, SmartHomeAutomationContext>, IDeviceCategoryService
     {
         public DeviceCategoryService(ISmartHomeAutomationService smartHomeAutomationService) : base(smartHomeAutomationService.ConnectionString)
         {

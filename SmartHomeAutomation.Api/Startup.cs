@@ -65,6 +65,7 @@ namespace SmartHomeAutomation.Api
             services.AddScoped<IDeviceCategoryService, DeviceCategoryService>();
             services.AddScoped<IDeviceTypeService, DeviceTypeService>();
             services.AddScoped<IManufacturerService, ManufacturerService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
 

@@ -9,7 +9,7 @@ using SmartHomeAutomation.Services.Interfaces;
 
 namespace SmartHomeAutomation.Services.Services
 {
-    public class UserService : Service<User, SmartHomeAutomationContext>, IUserService
+    public class UserService : BaseService<User, SmartHomeAutomationContext>, IUserService
     {
         public UserService(ISmartHomeAutomationService smartHomeAutomationService) : base(smartHomeAutomationService.ConnectionString)
         {
