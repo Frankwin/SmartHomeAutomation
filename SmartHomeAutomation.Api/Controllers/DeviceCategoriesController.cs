@@ -34,7 +34,7 @@ namespace SmartHomeAutomation.Api.Controllers
         [HttpGet("{guid}")]
         public IActionResult GetDeviceCategory([FromRoute] Guid guid)
         {
-            var deviceCategory = deviceCategoryService.GetByDeviceCategoryGuid(guid);
+            var deviceCategory = deviceCategoryService.GetByGuid(guid);
             if (deviceCategory == null)
             {
                 return NotFound();

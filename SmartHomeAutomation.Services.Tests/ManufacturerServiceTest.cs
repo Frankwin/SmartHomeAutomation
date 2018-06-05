@@ -20,7 +20,7 @@ namespace SmartHomeAutomation.Services.Tests
         public void CreateNewManufacturerWithUpsertTest()
         {
             var newManufacturer = new Manufacturer {ManufacturerName = "New Upsert Test Manufacturer"};
-            ManufacturerService.Upsert(newManufacturer, TestUser);
+            ManufacturerService.Upsert(newManufacturer, TestUserPrincipal);
             var foundManufacturers = ManufacturerService.Search("New Upsert Test Manufacturer").ToList();
 
             Assert.AreEqual(1, foundManufacturers.Count);
@@ -35,7 +35,7 @@ namespace SmartHomeAutomation.Services.Tests
             var foundManufacturers = ManufacturerService.Search(TestManufacturerName).ToList();
 
             Assert.AreEqual(1, foundManufacturers.Count);
-            ManufacturerService.SoftDelete(foundManufacturers.First().ManufacturerId, TestUser);
+            ManufacturerService.SoftDelete(foundManufacturers.First().ManufacturerId, TestUserPrincipal);
             
             var softDeletedManufacturer = ManufacturerService.Search(TestManufacturerName).ToList();
             Assert.AreEqual(1,softDeletedManufacturer.Count);
@@ -62,7 +62,7 @@ namespace SmartHomeAutomation.Services.Tests
         public void UpdateManufacturerUsingUpsert()
         {
             TestManufacturer.ManufacturerName = TestManufacturerName + " updated";
-            ManufacturerService.Upsert(TestManufacturer, TestUser);
+            ManufacturerService.Upsert(TestManufacturer, TestUserPrincipal);
             var foundManufacturers = ManufacturerService.Search(TestManufacturerName + " updated").ToList();
 
             Assert.AreEqual(1, foundManufacturers.Count);

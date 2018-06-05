@@ -15,15 +15,6 @@ namespace SmartHomeAutomation.Services.Services
         {
         }
 
-        public DeviceCategory GetByDeviceCategoryGuid(Guid guid)
-        {
-            using (var context = new SmartHomeAutomationContext())
-            {
-                return context.DeviceCategories
-                    .SingleOrDefault(x => x.DeviceCategoryId == guid);
-            }
-        }
-
         public DeviceCategory Upsert(DeviceCategory deviceCategory, IPrincipal userPrincipal)
         {
             var existingDeviceCategory = CheckForExistingDeviceCategory(deviceCategory.DeviceCategoryName);

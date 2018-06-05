@@ -1,3 +1,5 @@
+using System;
+using System.Data;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SmartHomeAutomation.Domain.Models.Device;
@@ -14,10 +16,10 @@ namespace SmartHomeAutomation.Services.Tests
         public void TestCleanup() => DeleteTestDeviceCategory(TestDeviceCategory);
 
         [TestMethod]        
-        public void CreateNewAccountWithUpsertTest()
+        public void CreateNewDeviceCategoryWithUpsertTest()
         {
             var newDeviceCategory = new DeviceCategory {DeviceCategoryName = "New Upsert Test Device Category"};
-            DeviceCategoryService.Upsert(newDeviceCategory, TestUser);
+            DeviceCategoryService.Upsert(newDeviceCategory, TestUserPrincipal);
             var foundDeviceCategories = DeviceCategoryService.Search("New Upsert Test Device Category").ToList();
 
             Assert.AreEqual(1, foundDeviceCategories.Count);
@@ -26,13 +28,21 @@ namespace SmartHomeAutomation.Services.Tests
             DeviceCategoryService.DeleteByGuid(foundDeviceCategories.First().DeviceCategoryId);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(DuplicateNameException))]
+        public void InsertDeviceCategoryThatAlreadyExistsTest()
+        {
+            TestDeviceCategory.IsDeleted = true;
+            DeviceCategoryService.Upsert(TestDeviceCategory, TestUserPrincipal);
+        }
+
         [TestMethod]        
-        public void SoftDeleteAccountTest()
+        public void SoftDeleteDeviceCategoryTest()
         {
             var foundDeviceCategories = DeviceCategoryService.Search(TestDeviceCategoryName).ToList();
 
             Assert.AreEqual(1, foundDeviceCategories.Count);
-            DeviceCategoryService.SoftDelete(foundDeviceCategories.First().DeviceCategoryId, TestUser);
+            DeviceCategoryService.SoftDelete(foundDeviceCategories.First().DeviceCategoryId, TestUserPrincipal);
             
             var softDeletedAccount = DeviceCategoryService.Search(TestDeviceCategoryName).ToList();
             Assert.AreEqual(1,softDeletedAccount.Count);
@@ -48,6 +58,30 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
+        public void InsertDeviceCategoryWithNameThatIsSoftDeletedTest()
+        {
+            TestDeviceCategory.IsDeleted = true;
+            DeviceCategoryService.Update(TestDeviceCategory);
+
+            var newDeviceCategory = new DeviceCategory() { DeviceCategoryName = TestDeviceCategoryName };
+            DeviceCategoryService.Upsert(newDeviceCategory, TestUserPrincipal);
+
+            var foundDeviceCategories = DeviceCategoryService.Search(TestDeviceCategoryName).ToList();
+
+            Assert.AreEqual(1, foundDeviceCategories.Count);
+            Assert.AreEqual(foundDeviceCategories.First().DeviceCategoryName, TestDeviceCategory.DeviceCategoryName);
+            Assert.IsFalse(foundDeviceCategories.First().IsDeleted);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SoftDeleteAccountThatDoesNotExist()
+        {
+            var guid = Guid.NewGuid();
+            DeviceCategoryService.SoftDelete(guid, TestUserPrincipal);
+        }
+
+        [TestMethod]
         public void UniqueNameCheckNonDuplicateAccount()
         {
             var uniqueName = DeviceCategoryService.CheckForExistingDeviceCategory("Testing Device Category");
@@ -56,10 +90,10 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
-        public void UpdateAccountUsingUpsert()
+        public void UpdateDeviceCategoryUsingUpsert()
         {
             TestDeviceCategory.DeviceCategoryName = TestDeviceCategoryName + " updated";
-            DeviceCategoryService.Upsert(TestDeviceCategory, TestUser);
+            DeviceCategoryService.Upsert(TestDeviceCategory, TestUserPrincipal);
             var foundAccounts = DeviceCategoryService.Search(TestDeviceCategoryName + " updated").ToList();
 
             Assert.AreEqual(1, foundAccounts.Count);

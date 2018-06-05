@@ -22,7 +22,7 @@ namespace SmartHomeAutomation.Services.Tests
         public void CreateNewAccountWithUpsertTest()
         {
             var newAccount = new Account {AccountName = "New Upsert Test Account"};
-            AccountService.Upsert(newAccount, TestUser);
+            AccountService.Upsert(newAccount, TestUserPrincipal);
             var foundAccounts = AccountService.Search("New Upsert Test Account").ToList();
 
             Assert.AreEqual(1, foundAccounts.Count);
@@ -36,7 +36,7 @@ namespace SmartHomeAutomation.Services.Tests
         public void InsertAccountThatAlreadyExistsTest()
         {
             TestAccount.IsDeleted = true;
-            AccountService.Upsert(TestAccount, TestUser);
+            AccountService.Upsert(TestAccount, TestUserPrincipal);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace SmartHomeAutomation.Services.Tests
             AccountService.Update(TestAccount);
 
             var newAccount = new Account {AccountName = TestAccountName};
-            AccountService.Upsert(newAccount, TestUser);
+            AccountService.Upsert(newAccount, TestUserPrincipal);
 
             var foundAccounts = AccountService.Search(TestAccountName).ToList();
 
@@ -60,7 +60,7 @@ namespace SmartHomeAutomation.Services.Tests
         public void SoftDeleteAccountThatDoesNotExist()
         {
             var guid = Guid.NewGuid();
-            AccountService.SoftDelete(guid, TestUser);
+            AccountService.SoftDelete(guid, TestUserPrincipal);
         }
 
         [TestMethod]        
@@ -69,7 +69,7 @@ namespace SmartHomeAutomation.Services.Tests
             var foundAccounts = AccountService.Search(TestAccountName).ToList();
 
             Assert.AreEqual(1, foundAccounts.Count);
-            AccountService.SoftDelete(foundAccounts.First().AccountId, TestUser);
+            AccountService.SoftDelete(foundAccounts.First().AccountId, TestUserPrincipal);
             
             var softDeletedAccount = AccountService.Search(TestAccountName).ToList();
             Assert.AreEqual(1,softDeletedAccount.Count);
@@ -96,7 +96,7 @@ namespace SmartHomeAutomation.Services.Tests
         public void UpdateAccountUsingUpsert()
         {
             TestAccount.AccountName = TestAccountName + " updated";
-            AccountService.Upsert(TestAccount, TestUser);
+            AccountService.Upsert(TestAccount, TestUserPrincipal);
             var foundAccounts = AccountService.Search(TestAccountName + " updated").ToList();
 
             Assert.AreEqual(1, foundAccounts.Count);

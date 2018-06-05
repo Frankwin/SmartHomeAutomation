@@ -20,7 +20,7 @@ namespace SmartHomeAutomation.Services.Tests
         public void CreateNewDeviceTypeWithUpsertTest()
         {
             var newDeviceType = new DeviceType { DeviceTypeName = "New Upsert Test Device Type", DeviceCategoryId = TestDeviceCategory.DeviceCategoryId};
-            DeviceTypeService.Upsert(newDeviceType, TestUser);
+            DeviceTypeService.Upsert(newDeviceType, TestUserPrincipal);
             var foundDeviceTypes = DeviceTypeService.Search("New Upsert Test Device Type").ToList();
 
             Assert.AreEqual(1, foundDeviceTypes.Count);
@@ -35,7 +35,7 @@ namespace SmartHomeAutomation.Services.Tests
             var foundDeviceTypes = DeviceTypeService.Search(TestDeviceTypeName).ToList();
 
             Assert.AreEqual(1, foundDeviceTypes.Count);
-            DeviceTypeService.SoftDelete(foundDeviceTypes.First().DeviceTypeId, TestUser);
+            DeviceTypeService.SoftDelete(foundDeviceTypes.First().DeviceTypeId, TestUserPrincipal);
             
             var softDeletedAccount = DeviceTypeService.Search(TestDeviceTypeName).ToList();
             Assert.AreEqual(1,softDeletedAccount.Count);
@@ -62,7 +62,7 @@ namespace SmartHomeAutomation.Services.Tests
         public void UpdateDeviceTypeUsingUpsert()
         {
             TestDeviceType.DeviceTypeName = TestDeviceTypeName + " updated";
-            DeviceTypeService.Upsert(TestDeviceType, TestUser);
+            DeviceTypeService.Upsert(TestDeviceType, TestUserPrincipal);
             var foundDeviceTypes = DeviceTypeService.Search(TestDeviceTypeName + " updated").ToList();
 
             Assert.AreEqual(1, foundDeviceTypes.Count);

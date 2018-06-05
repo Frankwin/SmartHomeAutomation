@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SmartHomeAutomation.Domain.Models;
 using SmartHomeAutomation.Domain.Models.User;
+using SmartHomeAutomation.Services.Interfaces;
 
 namespace SmartHomeAutomation.Api.Controllers
 {
@@ -13,30 +9,32 @@ namespace SmartHomeAutomation.Api.Controllers
     [Route("api/Users")]
     public class UsersController : Controller
     {
-        private readonly SmartHomeAutomationContext context;
+        private readonly IUserService userService;
 
-        public UsersController(SmartHomeAutomationContext context)
+        public UsersController(IUserService userService)
         {
-            this.context = context;
+            this.userService = userService;
         }
 
-        // GET: api/Users
+        /// <summary>
+        /// Get all the users
+        /// </summary>
+        /// <returns>List of users in JSON format</returns>
         [HttpGet]
-        public IEnumerable<User> GetUsers()
+        public IActionResult GetUsers()
         {
-            return context.Users;
+            return Ok(userService.GetAll());
         }
 
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser([FromRoute] Guid id)
+        /// <summary>
+        /// Get an individual user
+        /// </summary>
+        /// <param name="guid">User GUID</param>
+        /// <returns>User object in JSON format</returns>
+        [HttpGet("{guid}")]
+        public IActionResult GetUser([FromRoute] Guid guid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await context.Users.SingleOrDefaultAsync(m => m.UserId == id);
+            var user = userService.GetByGuid(guid);
 
             if (user == null)
             {
@@ -46,77 +44,43 @@ namespace SmartHomeAutomation.Api.Controllers
             return Ok(user);
         }
 
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser([FromRoute] Guid id, [FromBody] User user)
+        /// <summary>
+        /// Update a user
+        /// </summary>
+        /// <param name="guid">User GUID from URL</param>
+        /// <param name="user">User object from body</param>
+        /// <returns>Updated user object in JSON format</returns>
+        [HttpPut("{guid}")]
+        public IActionResult PutUser([FromRoute] Guid guid, [FromBody] User user)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != user.UserId)
+            if (guid != user.AccountId)
             {
                 return BadRequest();
             }
 
-            context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-
-                throw;
-            }
-            return Ok(user);
+            return Ok(userService.Upsert(user, User));
         }
 
-        // POST: api/Users
+        /// <summary>
+        /// Create a new user
+        /// </summary>
+        /// <param name="user">User object from body</param>
+        /// <returns>Newly created user object in JSON format</returns>
         [HttpPost]
-        public async Task<IActionResult> PostUser([FromBody] User user)
+        public IActionResult PostUser([FromBody] User user)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            context.Users.Add(user);
-            await context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            return Ok(userService.Upsert(user, User));
         }
 
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] Guid id)
+        /// <summary>
+        /// Delete a user
+        /// </summary>
+        /// <param name="guid">User GUID from URL</param>
+        /// <returns>Deleted user object in JSON format</returns>
+        [HttpDelete("{guid}")]
+        public IActionResult DeleteUser([FromRoute] Guid guid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await context.Users.SingleOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            context.Users.Remove(user);
-            await context.SaveChangesAsync();
-
-            return Ok(user);
-        }
-
-        private bool UserExists(Guid id)
-        {
-            return context.Users.Any(e => e.UserId == id);
+            return Ok(userService.SoftDelete(guid, User));
         }
     }
 }

@@ -61,9 +61,10 @@ namespace SmartHomeAutomation.Api
 
             // Register application services
             services.AddScoped<ISmartHomeAutomationService, SmartHomeAutomationService>();
-            services.AddScoped<IManufacturerService, ManufacturerService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IDeviceCategoryService, DeviceCategoryService>();
+            services.AddScoped<IDeviceTypeService, DeviceTypeService>();
+            services.AddScoped<IManufacturerService, ManufacturerService>();
         }
 
 
