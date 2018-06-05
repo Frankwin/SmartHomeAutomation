@@ -57,7 +57,7 @@ namespace SmartHomeAutomation.Services.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void SoftDeleteAccountThatDoesNotExist()
+        public void SoftDeleteAccountThatDoesNotExistTest()
         {
             var guid = Guid.NewGuid();
             AccountService.SoftDelete(guid, TestUserPrincipal);
@@ -77,7 +77,7 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
-        public void UniqueNameCheckDuplicateAccount()
+        public void UniqueNameCheckDuplicateAccountTest()
         {
             var uniqueName = AccountService.CheckForExistingAccountName(TestAccountName);
 
@@ -85,7 +85,7 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
-        public void UniqueNameCheckNonDuplicateAccount()
+        public void UniqueNameCheckNonDuplicateAccountTest()
         {
             var uniqueName = AccountService.CheckForExistingAccountName("Testing Account");
 
@@ -93,7 +93,7 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
-        public void UpdateAccountUsingUpsert()
+        public void UpdateAccountUsingUpsertTest()
         {
             TestAccount.AccountName = TestAccountName + " updated";
             AccountService.Upsert(TestAccount, TestUserPrincipal);

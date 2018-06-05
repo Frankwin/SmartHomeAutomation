@@ -1,3 +1,5 @@
+using System;
+using System.Data;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SmartHomeAutomation.Domain.Models.Device;
@@ -43,7 +45,23 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
-        public void UniqueNameCheckDuplicateDeviceType()
+        [ExpectedException(typeof(ArgumentException))]
+        public void SoftDeleteDeviceTypeThatDoesNotExistTest()
+        {
+            var guid = Guid.NewGuid();
+            DeviceTypeService.SoftDelete(guid, TestUserPrincipal);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DuplicateNameException))]
+        public void InsertDeviceTypeThatAlreadyExistsTest()
+        {
+            TestDeviceType.IsDeleted = true;
+            DeviceTypeService.Upsert(TestDeviceType, TestUserPrincipal);
+        }
+
+        [TestMethod]
+        public void UniqueNameCheckDuplicateDeviceTypeTest()
         {
             var uniqueName = DeviceTypeService.CheckForExistingDeviceType(TestDeviceTypeName);
 
@@ -51,7 +69,23 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
-        public void UniqueNameCheckNonDuplicateAccount()
+        public void InsertDeviceTypeWithNameThatIsSoftDeletedTest()
+        {
+            TestDeviceCategory.IsDeleted = true;
+            DeviceTypeService.Update(TestDeviceType);
+
+            var newDeviceType = new DeviceType { DeviceTypeName = TestDeviceCategoryName, DeviceCategoryId = TestDeviceCategory.DeviceCategoryId};
+            DeviceTypeService.Upsert(newDeviceType, TestUserPrincipal);
+
+            var foundDeviceTypes = DeviceTypeService.Search(TestDeviceTypeName).ToList();
+
+            Assert.AreEqual(1, foundDeviceTypes.Count);
+            Assert.AreEqual(foundDeviceTypes.First().DeviceTypeName, TestDeviceType.DeviceTypeName);
+            Assert.IsFalse(foundDeviceTypes.First().IsDeleted);
+        }
+
+        [TestMethod]
+        public void UniqueNameCheckNonDuplicateAccountTest()
         {
             var uniqueName = DeviceTypeService.CheckForExistingDeviceType("Testing Device Type");
 
@@ -59,7 +93,7 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
-        public void UpdateDeviceTypeUsingUpsert()
+        public void UpdateDeviceTypeUsingUpsertTest()
         {
             TestDeviceType.DeviceTypeName = TestDeviceTypeName + " updated";
             DeviceTypeService.Upsert(TestDeviceType, TestUserPrincipal);

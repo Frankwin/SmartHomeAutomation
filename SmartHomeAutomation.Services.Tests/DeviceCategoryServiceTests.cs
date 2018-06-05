@@ -50,7 +50,7 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
-        public void UniqueNameCheckDuplicateAccount()
+        public void UniqueNameCheckDuplicateDeviceCategoryTest()
         {
             var uniqueName = DeviceCategoryService.CheckForExistingDeviceCategory(TestDeviceCategoryName);
 
@@ -75,14 +75,14 @@ namespace SmartHomeAutomation.Services.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void SoftDeleteAccountThatDoesNotExist()
+        public void SoftDeleteDeviceCategoryThatDoesNotExistTest()
         {
             var guid = Guid.NewGuid();
             DeviceCategoryService.SoftDelete(guid, TestUserPrincipal);
         }
 
         [TestMethod]
-        public void UniqueNameCheckNonDuplicateAccount()
+        public void UniqueNameCheckNonDuplicateDeviceCategory()
         {
             var uniqueName = DeviceCategoryService.CheckForExistingDeviceCategory("Testing Device Category");
 
@@ -90,7 +90,7 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestMethod]
-        public void UpdateDeviceCategoryUsingUpsert()
+        public void UpdateDeviceCategoryUsingUpsertTest()
         {
             TestDeviceCategory.DeviceCategoryName = TestDeviceCategoryName + " updated";
             DeviceCategoryService.Upsert(TestDeviceCategory, TestUserPrincipal);
