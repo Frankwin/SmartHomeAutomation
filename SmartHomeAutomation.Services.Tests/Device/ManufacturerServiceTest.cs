@@ -4,20 +4,11 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SmartHomeAutomation.Domain.Models.Device;
 
-namespace SmartHomeAutomation.Services.Tests
+namespace SmartHomeAutomation.Services.Tests.Device
 {
     [TestClass]
     public class ManufacturerServiceTests : TestBase
     {
-        [TestInitialize]
-        public void TestInitialize() => TestManufacturer = CreateTestManufacturer();
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            DeleteTestManufacturer(TestManufacturer);
-        }
-
         [TestMethod]        
         public void CreateNewManufacturerWithUpsertTest()
         {
@@ -35,7 +26,6 @@ namespace SmartHomeAutomation.Services.Tests
         public void CheckDuplicateManufacturerTest()
         {
             var uniqueName = ManufacturerService.CheckForExistingManufacturerName(TestManufacturerName);
-
             Assert.AreEqual(TestManufacturer.ManufacturerName, uniqueName.ManufacturerName);
         }
 

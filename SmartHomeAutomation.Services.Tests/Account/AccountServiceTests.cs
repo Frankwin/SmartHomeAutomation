@@ -2,26 +2,16 @@ using System;
 using System.Data;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SmartHomeAutomation.Domain.Models.Account;
 
-namespace SmartHomeAutomation.Services.Tests
+namespace SmartHomeAutomation.Services.Tests.Account
 {
     [TestClass]
     public class AccountServiceTests : TestBase
     {
-        [TestInitialize]
-        public void TestInitialize() => TestAccount = CreateTestAccount();
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            DeleteTestAccount(TestAccount);
-        }
-
         [TestMethod]        
         public void CreateNewAccountWithUpsertTest()
         {
-            var newAccount = new Account {AccountName = "New Upsert Test Account"};
+            var newAccount = new Domain.Models.Account.Account {AccountName = "New Upsert Test Account"};
             AccountService.Upsert(newAccount, TestUserPrincipal);
             var foundAccounts = AccountService.Search("New Upsert Test Account").ToList();
 
@@ -45,13 +35,13 @@ namespace SmartHomeAutomation.Services.Tests
             TestAccount.IsDeleted = true;
             AccountService.Update(TestAccount);
 
-            var newAccount = new Account {AccountName = TestAccountName};
+            var newAccount = new Domain.Models.Account.Account { AccountName = TestAccountName};
             AccountService.Upsert(newAccount, TestUserPrincipal);
 
             var foundAccounts = AccountService.Search(TestAccountName).ToList();
 
             Assert.AreEqual(1, foundAccounts.Count);
-            Assert.AreEqual(foundAccounts.First().AccountName, TestAccount.AccountName);
+            Assert.AreEqual<string>(foundAccounts.First().AccountName, TestAccount.AccountName);
             Assert.IsFalse(foundAccounts.First().IsDeleted);
         }
 
@@ -81,7 +71,7 @@ namespace SmartHomeAutomation.Services.Tests
         {
             var uniqueName = AccountService.CheckForExistingAccountName(TestAccountName);
 
-            Assert.AreEqual(TestAccount.AccountName, uniqueName.AccountName);
+            Assert.AreEqual<string>(TestAccount.AccountName, uniqueName.AccountName);
         }
 
         [TestMethod]
@@ -100,7 +90,7 @@ namespace SmartHomeAutomation.Services.Tests
             var foundAccounts = AccountService.Search(TestAccountName + " updated").ToList();
 
             Assert.AreEqual(1, foundAccounts.Count);
-            Assert.AreEqual(foundAccounts.First().AccountName, TestAccount.AccountName);
+            Assert.AreEqual<string>(foundAccounts.First().AccountName, TestAccount.AccountName);
         }
     }
 }

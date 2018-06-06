@@ -6,8 +6,9 @@ using SmartHomeAutomation.Domain.Models;
 using SmartHomeAutomation.Domain.Models.Device;
 using SmartHomeAutomation.Services.Helpers;
 using SmartHomeAutomation.Services.Interfaces;
+using SmartHomeAutomation.Services.Interfaces.Device;
 
-namespace SmartHomeAutomation.Services.Services
+namespace SmartHomeAutomation.Services.Services.Device
 {
     public class ManufacturerService : BaseService<Manufacturer, SmartHomeAutomationContext>, IManufacturerService
     {

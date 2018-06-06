@@ -240,6 +240,95 @@ namespace SmartHomeAutomation.Domain.Migrations
                     b.ToTable("Room","Settings");
                 });
 
+            modelBuilder.Entity("SmartHomeAutomation.Domain.Models.Settings.DeviceSetting", b =>
+                {
+                    b.Property<Guid>("DeviceSettingId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<string>("DeviceSettingName")
+                        .IsRequired();
+
+                    b.Property<string>("DeviceSettingValue")
+                        .IsRequired();
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastUpdatedAt");
+
+                    b.Property<string>("LastUpdatedBy");
+
+                    b.Property<Guid>("OwnedDeviceId");
+
+                    b.HasKey("DeviceSettingId");
+
+                    b.ToTable("DeviceSetting","Settings");
+                });
+
+            modelBuilder.Entity("SmartHomeAutomation.Domain.Models.Settings.OwnedDevice", b =>
+                {
+                    b.Property<Guid>("OwnedDeviceId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("AccountId");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<string>("DeviceDescription");
+
+                    b.Property<Guid>("DeviceId");
+
+                    b.Property<string>("DeviceName")
+                        .IsRequired();
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastUpdatedAt");
+
+                    b.Property<string>("LastUpdatedBy");
+
+                    b.Property<Guid?>("RoomId");
+
+                    b.HasKey("OwnedDeviceId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("OwnedDevice","Settings");
+                });
+
+            modelBuilder.Entity("SmartHomeAutomation.Domain.Models.Settings.Room", b =>
+                {
+                    b.Property<Guid>("RoomId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("AccountId");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime>("LastUpdatedAt");
+
+                    b.Property<string>("LastUpdatedBy");
+
+                    b.Property<string>("RoomDescription")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("RoomName")
+                        .HasMaxLength(50);
+
+                    b.HasKey("RoomId");
+
+                    b.ToTable("Room","Settings");
+                });
+
             modelBuilder.Entity("SmartHomeAutomation.Domain.Models.User.User", b =>
                 {
                     b.Property<Guid>("UserId")

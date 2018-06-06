@@ -9,7 +9,7 @@ namespace SmartHomeAutomation.Services.Tests
     {
 
         [TestInitialize]
-        public void TestInitialize()
+        public override void TestInitialize()
         {
             TestAccount = CreateTestAccount("Test Account 01");
             CreateTestAccount("Test Account 02");
@@ -24,7 +24,7 @@ namespace SmartHomeAutomation.Services.Tests
         }
 
         [TestCleanup]
-        public void TestCleanup()
+        public override void TestCleanup()
         {
             DeleteTestAccountByName("Test Account 01");
             DeleteTestAccountByName("Test Account 02");
@@ -49,9 +49,9 @@ namespace SmartHomeAutomation.Services.Tests
         public void GetAllByPageTest()
         {
             var accountByPage = AccountService.GetByPage(5, 1, "AccountName", "DESC");
-            Assert.IsTrue(accountByPage.Collection.Count == 5);
-            Assert.IsTrue(accountByPage.TotalCount == 10);
-            Assert.IsTrue(accountByPage.TotalPages.Equals(2.0));
+            Assert.AreEqual(5, accountByPage.Collection.Count);
+            Assert.AreEqual(10, accountByPage.TotalCount);
+            Assert.AreEqual(2.0, accountByPage.TotalPages);
             Assert.IsTrue(accountByPage.Collection.First().AccountName == "Test Account 10");
         }
 

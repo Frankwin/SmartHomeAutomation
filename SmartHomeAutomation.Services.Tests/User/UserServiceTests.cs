@@ -2,29 +2,16 @@ using System;
 using System.Data;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SmartHomeAutomation.Domain.Models.User;
 
-namespace SmartHomeAutomation.Services.Tests
+namespace SmartHomeAutomation.Services.Tests.User
 {
     [TestClass]
     public class UserServiceTests : TestBase
     {
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            TestUser = CreateTestUser();
-        } 
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            DeleteUser(TestUser);
-        }
-
         [TestMethod]        
         public void CreateNewUserWithUpsertTest()
         {
-            var newUser = new User {UserName = "New Upsert Test User", EmailAddress = "TestUser@test.com", Password = "password", AccountId = TestAccount.AccountId};
+            var newUser = new Domain.Models.User.User {UserName = "New Upsert Test User", EmailAddress = "TestUser@test.com", Password = "password", AccountId = TestAccount.AccountId};
             UserService.Upsert(newUser, TestUserPrincipal);
             var foundUsers = UserService.Search("New Upsert Test User").ToList();
 
@@ -49,13 +36,13 @@ namespace SmartHomeAutomation.Services.Tests
             TestUser.IsDeleted = true;
             UserService.Update(TestUser);
 
-            var newUser = new User {UserName= TestUserName, EmailAddress = "TestUser@test.com", Password = "password", AccountId = TestAccount.AccountId};
+            var newUser = new Domain.Models.User.User { UserName= TestUserName, EmailAddress = "TestUser@test.com", Password = "password", AccountId = TestAccount.AccountId};
             UserService.Upsert(newUser, TestUserPrincipal);
 
             var foundUsers = UserService.Search(TestUserName).ToList();
 
             Assert.AreEqual(1, foundUsers.Count);
-            Assert.AreEqual(foundUsers.First().UserName, TestUser.UserName);
+            Assert.AreEqual<string>(foundUsers.First().UserName, TestUser.UserName);
             Assert.IsFalse(foundUsers.First().IsDeleted);
         }
 
@@ -85,7 +72,7 @@ namespace SmartHomeAutomation.Services.Tests
         {
             var uniqueName = UserService.CheckForExistingUserName(TestUserName);
 
-            Assert.AreEqual(TestUser.UserName, uniqueName.UserName);
+            Assert.AreEqual<string>(TestUser.UserName, uniqueName.UserName);
         }
 
         [TestMethod]
@@ -104,7 +91,7 @@ namespace SmartHomeAutomation.Services.Tests
             var foundAccounts = UserService.Search(TestUserName + " updated").ToList();
 
             Assert.AreEqual(1, foundAccounts.Count);
-            Assert.AreEqual(foundAccounts.First().UserName, TestUser.UserName);
+            Assert.AreEqual<string>(foundAccounts.First().UserName, TestUser.UserName);
         }
     }
 }

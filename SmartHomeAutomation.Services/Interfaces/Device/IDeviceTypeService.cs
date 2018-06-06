@@ -2,7 +2,7 @@
 using System.Security.Principal;
 using SmartHomeAutomation.Domain.Models.Device;
 
-namespace SmartHomeAutomation.Services.Interfaces
+namespace SmartHomeAutomation.Services.Interfaces.Device
 {
     public interface IDeviceTypeService : IReaderService<DeviceType>, IWriterService<DeviceType>
     {

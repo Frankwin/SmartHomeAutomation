@@ -9,7 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartHomeAutomation.Domain.Models;
 using SmartHomeAutomation.Services.Interfaces;
+using SmartHomeAutomation.Services.Interfaces.Device;
+using SmartHomeAutomation.Services.Interfaces.Settings;
 using SmartHomeAutomation.Services.Services;
+using SmartHomeAutomation.Services.Services.Device;
+using SmartHomeAutomation.Services.Services.Settings;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SmartHomeAutomation.Api
@@ -61,11 +65,19 @@ namespace SmartHomeAutomation.Api
 
             // Register application services
             services.AddScoped<ISmartHomeAutomationService, SmartHomeAutomationService>();
+            // Account Services
             services.AddScoped<IAccountService, AccountService>();
+            // Device Services
             services.AddScoped<IDeviceCategoryService, DeviceCategoryService>();
+            services.AddScoped<IDeviceService, DeviceService>();
             services.AddScoped<IDeviceTypeService, DeviceTypeService>();
             services.AddScoped<IManufacturerService, ManufacturerService>();
+            // Settings Services
+            services.AddScoped<IOwnedDeviceService, OwnedDeviceService>();
+            services.AddScoped<IRoomService, RoomService>();
+            // User Services
             services.AddScoped<IUserService, UserService>();
+            
         }
 
 

@@ -4,17 +4,11 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SmartHomeAutomation.Domain.Models.Device;
 
-namespace SmartHomeAutomation.Services.Tests
+namespace SmartHomeAutomation.Services.Tests.Device
 {
     [TestClass]
     public class DeviceCategoryServiceTests : TestBase
     {
-        [TestInitialize]
-        public void TestInitialize() => TestDeviceCategory = CreateTestDeviceCategory();
-
-        [TestCleanup]
-        public void TestCleanup() => DeleteTestDeviceCategory(TestDeviceCategory);
-
         [TestMethod]        
         public void CreateNewDeviceCategoryWithUpsertTest()
         {
