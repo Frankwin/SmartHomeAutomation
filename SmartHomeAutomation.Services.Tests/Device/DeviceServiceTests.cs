@@ -11,7 +11,7 @@ namespace SmartHomeAutomation.Services.Tests.Device
         [TestMethod]        
         public void CreateNewDeviceWithUpsertTest()
         {
-            var newDevice = new Domain.Models.Device.Device
+            var newDevice = new Domain.Models.DeviceModels.Device
             {
                 DeviceName = "New Upsert Test Device",
                 DeviceTypeId = TestDeviceType.DeviceTypeId,
@@ -40,7 +40,7 @@ namespace SmartHomeAutomation.Services.Tests.Device
             TestDevice.IsDeleted = true;
             DeviceService.Update(TestDevice);
 
-            var newDevice = new Domain.Models.Device.Device {DeviceName= TestDeviceName, DeviceTypeId = TestDeviceType.DeviceTypeId};
+            var newDevice = new Domain.Models.DeviceModels.Device {DeviceName= TestDeviceName, DeviceTypeId = TestDeviceType.DeviceTypeId};
             DeviceService.Upsert(newDevice, TestUserPrincipal);
 
             var foundDevices = DeviceService.Search(TestDeviceName).ToList();

@@ -1,19 +1,21 @@
 ﻿using System.Linq;
 using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SmartHomeAutomation.Domain.Models.Device;
-using SmartHomeAutomation.Domain.Models.Settings;
+using SmartHomeAutomation.Domain.Models.DeviceModels;
+using SmartHomeAutomation.Domain.Models.SettingsModels;
 using SmartHomeAutomation.Services.Interfaces;
 using SmartHomeAutomation.Services.Services;
+using SmartHomeAutomation.Services.Services.Account;
 using SmartHomeAutomation.Services.Services.Device;
 using SmartHomeAutomation.Services.Services.Settings;
+using SmartHomeAutomation.Services.Services.User;
 
 namespace SmartHomeAutomation.Services.Tests
 {
     public class TestBase
     {
         private static readonly ISmartHomeAutomationService SmartHomeAutomationService = new SmartHomeAutomationService();
-        public readonly IPrincipal TestUserPrincipal = new GenericPrincipal(new GenericIdentity("Test Account"), new[] { "Test" });
+        public readonly IPrincipal TestUserPrincipal = new GenericPrincipal(new GenericIdentity("Test User Principal"), new[] { "Test" });
         public readonly AccountService AccountService = new AccountService(SmartHomeAutomationService);
         public readonly DeviceCategoryService DeviceCategoryService = new DeviceCategoryService(SmartHomeAutomationService);
         public readonly ManufacturerService ManufacturerService = new ManufacturerService(SmartHomeAutomationService);
@@ -35,13 +37,13 @@ namespace SmartHomeAutomation.Services.Tests
         public const string TestDeviceSettingName = "Test Device Setting Name";
         public const string TestDeviceSettingValue = "Test Device Setting Value";
 
-        public Domain.Models.Account.Account TestAccount { get; set; }
+        public Domain.Models.AccountModels.Account TestAccount { get; set; }
         public DeviceCategory TestDeviceCategory { get; set; }
         public Manufacturer TestManufacturer { get; set; }
         public DeviceType TestDeviceType { get; set; }
-        public Domain.Models.User.User TestUser { get; set; }
+        public Domain.Models.UserModels.User TestUser { get; set; }
         public Room TestRoom { get; set; }
-        public Domain.Models.Device.Device TestDevice { get; set; }
+        public Domain.Models.DeviceModels.Device TestDevice { get; set; }
         public OwnedDevice TestOwnedDevice { get; set; }
         public DeviceSetting TestDeviceSetting { get; set; }
 
@@ -73,15 +75,15 @@ namespace SmartHomeAutomation.Services.Tests
             DeleteTestAccount(TestAccount);
         }
 
-        public Domain.Models.Account.Account CreateTestAccount(string accountName = TestAccountName)
+        public Domain.Models.AccountModels.Account CreateTestAccount(string accountName = TestAccountName)
         {
-            var newAccount = new Domain.Models.Account.Account { AccountName = accountName };
+            var newAccount = new Domain.Models.AccountModels.Account { AccountName = accountName };
             AccountService.Insert(newAccount);
             newAccount = AccountService.Search(accountName).First();
             return newAccount;
         }
 
-        public void DeleteTestAccount(Domain.Models.Account.Account account)
+        public void DeleteTestAccount(Domain.Models.AccountModels.Account account)
         {
             AccountService.DeleteByGuid(account.AccountId);
         }
@@ -134,15 +136,15 @@ namespace SmartHomeAutomation.Services.Tests
             DeviceTypeService.DeleteByGuid(deviceType.DeviceTypeId);
         }
 
-        public Domain.Models.User.User CreateTestUser(string testUserName = TestUserName)
+        public Domain.Models.UserModels.User CreateTestUser(string testUserName = TestUserName)
         {
-            var newTestUser = new Domain.Models.User.User {UserName = testUserName, AccountId = TestAccount.AccountId,EmailAddress = "testuser@test.com", Password = "password"};
+            var newTestUser = new Domain.Models.UserModels.User {UserName = testUserName, AccountId = TestAccount.AccountId,EmailAddress = "testuser@test.com", Password = "password"};
             UserService.Insert(newTestUser);
             newTestUser = UserService.Search(testUserName).First();
             return newTestUser;
         }
 
-        public void DeleteTestUser(Domain.Models.User.User user)
+        public void DeleteTestUser(Domain.Models.UserModels.User user)
         {
             UserService.DeleteByGuid(user.UserId);
         }
@@ -160,9 +162,9 @@ namespace SmartHomeAutomation.Services.Tests
             RoomService.DeleteByGuid(room.RoomId);
         }
 
-        public Domain.Models.Device.Device CreateTestDevice(string testDeviceName = TestDeviceName)
+        public Domain.Models.DeviceModels.Device CreateTestDevice(string testDeviceName = TestDeviceName)
         {
-            var newTestDevice = new Domain.Models.Device.Device
+            var newTestDevice = new Domain.Models.DeviceModels.Device
             {
                 DeviceName = testDeviceName,
                 DeviceTypeId = TestDeviceType.DeviceTypeId,
@@ -173,7 +175,7 @@ namespace SmartHomeAutomation.Services.Tests
             return newTestDevice;
         }
 
-        public void DeleteTestDevice(Domain.Models.Device.Device device)
+        public void DeleteTestDevice(Domain.Models.DeviceModels.Device device)
         {
             DeviceService.DeleteByGuid(device.DeviceId);
         }

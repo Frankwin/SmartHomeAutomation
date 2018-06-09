@@ -86,12 +86,12 @@ namespace SmartHomeAutomation.Services.Services
             }
         }
 
-        public PageResult GetByPropertyByPage(string propertyName, int id, int pageSize, int pageNumber, string orderBy, string direction)
+        public PageResult GetByPropertyByPage(string propertyName, Guid guid, int pageSize, int pageNumber, string orderBy, string direction)
         {
             using (var context = CreateContext(ConnectionString))
             {
                 var repo = new Repository<TEntity>(context);
-                var lambda = Utilities.BuildEqualsExpression<TEntity>(propertyName, id);
+                var lambda = Utilities.BuildEqualsExpression<TEntity>(propertyName, guid);
                 var query = repo.GetAllQueryBy(lambda);
                 return PagingHelper.GetPageResult(context, query, pageSize, pageNumber, orderBy, direction);
             }

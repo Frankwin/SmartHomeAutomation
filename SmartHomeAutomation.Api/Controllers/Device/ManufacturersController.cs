@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using SmartHomeAutomation.Domain.Models.Device;
+using SmartHomeAutomation.Domain.Models.DeviceModels;
 using SmartHomeAutomation.Services.Interfaces.Device;
 
 namespace SmartHomeAutomation.Api.Controllers.Device

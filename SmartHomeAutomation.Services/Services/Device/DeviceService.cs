@@ -9,13 +9,13 @@ using SmartHomeAutomation.Services.Interfaces.Device;
 
 namespace SmartHomeAutomation.Services.Services.Device
 {
-    public class DeviceService : BaseService<Domain.Models.Device.Device, SmartHomeAutomationContext>, IDeviceService
+    public class DeviceService : BaseService<Domain.Models.DeviceModels.Device, SmartHomeAutomationContext>, IDeviceService
     {
         public DeviceService(ISmartHomeAutomationService smartHomeAutomationService) : base(smartHomeAutomationService.ConnectionString)
         {
         }
 
-        public Domain.Models.Device.Device Upsert(Domain.Models.Device.Device device, IPrincipal userPrincipal)
+        public Domain.Models.DeviceModels.Device Upsert(Domain.Models.DeviceModels.Device device, IPrincipal userPrincipal)
         {
             var existingDevice = CheckForExistingDevice(device.DeviceName);
             if (existingDevice != null)
@@ -45,7 +45,7 @@ namespace SmartHomeAutomation.Services.Services.Device
             return device;
         }
 
-        public Domain.Models.Device.Device SoftDelete(Guid guid, IPrincipal userPrincipal)
+        public Domain.Models.DeviceModels.Device SoftDelete(Guid guid, IPrincipal userPrincipal)
         {
             using (var context = new SmartHomeAutomationContext())
             {
@@ -60,7 +60,7 @@ namespace SmartHomeAutomation.Services.Services.Device
             }
         }
 
-        public Domain.Models.Device.Device CheckForExistingDevice(string device)
+        public Domain.Models.DeviceModels.Device CheckForExistingDevice(string device)
         {
             using (var context = new SmartHomeAutomationContext())
             {

@@ -12,7 +12,7 @@ namespace SmartHomeAutomation.Services.Interfaces
         PageResult GetByPage(int pageSize, int pageNumber, string orderBy, string direction);
         IEnumerable<TEntity> GetByProperty(string propertyName, object value);
         IEnumerable<TEntity> GetByPropertyIncluding(string propertyName, object value, string[] includeProperties);
-        PageResult GetByPropertyByPage(string propertyName, int id, int pageSize, int pageNumber, string orderBy,
+        PageResult GetByPropertyByPage(string propertyName, Guid guid, int pageSize, int pageNumber, string orderBy,
             string direction);
     }
 }

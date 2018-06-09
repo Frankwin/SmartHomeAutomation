@@ -2,7 +2,7 @@ using System;
 using System.Data;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SmartHomeAutomation.Domain.Models.Settings;
+using SmartHomeAutomation.Domain.Models.SettingsModels;
 
 namespace SmartHomeAutomation.Services.Tests.Settings
 {

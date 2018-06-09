@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Security.Principal;
-using SmartHomeAutomation.Domain.Models.Account;
 
-namespace SmartHomeAutomation.Services.Interfaces
+namespace SmartHomeAutomation.Services.Interfaces.Account
 {
-    public interface IAccountService : IReaderService<Account>, IWriterService<Account>
+    public interface IAccountService : IReaderService<Domain.Models.AccountModels.Account>, IWriterService<Domain.Models.AccountModels.Account>
     {
-        Account Upsert(Account account, IPrincipal userPrincipal);
-        Account SoftDelete(Guid guid, IPrincipal userPrincipal);
-        Account CheckForExistingAccountName(string name);
+        Domain.Models.AccountModels.Account Upsert(Domain.Models.AccountModels.Account account, IPrincipal userPrincipal);
+        Domain.Models.AccountModels.Account SoftDelete(Guid guid, IPrincipal userPrincipal);
+        Domain.Models.AccountModels.Account CheckForExistingAccountName(string name);
     }
 }

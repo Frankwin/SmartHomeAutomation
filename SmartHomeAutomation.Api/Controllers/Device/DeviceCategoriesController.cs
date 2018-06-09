@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using SmartHomeAutomation.Domain.Models.Device;
-using SmartHomeAutomation.Services.Interfaces;
+using SmartHomeAutomation.Domain.Models.DeviceModels;
+using SmartHomeAutomation.Services.Interfaces.Device;
 
-namespace SmartHomeAutomation.Api.Controllers
+namespace SmartHomeAutomation.Api.Controllers.Device
 {
     [Produces("application/json")]
     [Route("api/[controller]")]

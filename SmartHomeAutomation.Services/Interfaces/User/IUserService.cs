@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Security.Principal;
-using SmartHomeAutomation.Domain.Models.User;
 
-namespace SmartHomeAutomation.Services.Interfaces
+namespace SmartHomeAutomation.Services.Interfaces.User
 {
-    public interface IUserService : IReaderService<User>, IWriterService<User>
+    public interface IUserService : IReaderService<Domain.Models.UserModels.User>, IWriterService<Domain.Models.UserModels.User>
     {
-        User Upsert(User user, IPrincipal userPrincipal);
-        User SoftDelete(Guid guid, IPrincipal userPrincipal);
-        User CheckForExistingUserName(string name);
+        Domain.Models.UserModels.User Upsert(Domain.Models.UserModels.User user, IPrincipal userPrincipal);
+        Domain.Models.UserModels.User SoftDelete(Guid guid, IPrincipal userPrincipal);
+        Domain.Models.UserModels.User CheckForExistingUserName(string name);
     }
 }

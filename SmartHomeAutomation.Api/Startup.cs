@@ -1,19 +1,26 @@
 ﻿using System;
+using System.Buffers;
 using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using SmartHomeAutomation.Domain.Models;
 using SmartHomeAutomation.Services.Interfaces;
+using SmartHomeAutomation.Services.Interfaces.Account;
 using SmartHomeAutomation.Services.Interfaces.Device;
 using SmartHomeAutomation.Services.Interfaces.Settings;
+using SmartHomeAutomation.Services.Interfaces.User;
 using SmartHomeAutomation.Services.Services;
+using SmartHomeAutomation.Services.Services.Account;
 using SmartHomeAutomation.Services.Services.Device;
 using SmartHomeAutomation.Services.Services.Settings;
+using SmartHomeAutomation.Services.Services.User;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SmartHomeAutomation.Api
@@ -32,7 +39,14 @@ namespace SmartHomeAutomation.Api
         {
             const string connection = @"Server=localhost;Database=SmartHomeAutomation;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<SmartHomeAutomationContext>(opt => opt.UseSqlServer(connection));
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.OutputFormatters.Clear();
+                options.OutputFormatters.Add(new JsonOutputFormatter(new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                }, ArrayPool<char>.Shared));
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
@@ -104,6 +118,11 @@ namespace SmartHomeAutomation.Api
 
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc();
         }

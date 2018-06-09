@@ -3,10 +3,10 @@ using System.Security.Principal;
 
 namespace SmartHomeAutomation.Services.Interfaces.Device
 {
-    public interface IDeviceService : IReaderService<Domain.Models.Device.Device>, IWriterService<Domain.Models.Device.Device>
+    public interface IDeviceService : IReaderService<Domain.Models.DeviceModels.Device>, IWriterService<Domain.Models.DeviceModels.Device>
     {
-        Domain.Models.Device.Device Upsert(Domain.Models.Device.Device device, IPrincipal userPrincipal);
-        Domain.Models.Device.Device SoftDelete(Guid guid, IPrincipal userPrincipal);
-        Domain.Models.Device.Device CheckForExistingDevice(string device);
+        Domain.Models.DeviceModels.Device Upsert(Domain.Models.DeviceModels.Device device, IPrincipal userPrincipal);
+        Domain.Models.DeviceModels.Device SoftDelete(Guid guid, IPrincipal userPrincipal);
+        Domain.Models.DeviceModels.Device CheckForExistingDevice(string device);
     }
 }

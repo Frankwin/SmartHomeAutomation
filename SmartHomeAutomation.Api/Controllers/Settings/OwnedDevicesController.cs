@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using SmartHomeAutomation.Domain.Models.Settings;
-using SmartHomeAutomation.Services.Interfaces;
+using SmartHomeAutomation.Domain.Models.SettingsModels;
+using SmartHomeAutomation.Services.Interfaces.Settings;
 
 namespace SmartHomeAutomation.Api.Controllers.Settings
 {

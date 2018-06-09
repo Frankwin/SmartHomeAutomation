@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using SmartHomeAutomation.Domain.Models;
-using SmartHomeAutomation.Domain.Models.Device;
+using SmartHomeAutomation.Domain.Models.DeviceModels;
 
 namespace SmartHomeAutomation.Domain.SeedData
 {

@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SmartHomeAutomation.Domain.Models;
-using SmartHomeAutomation.Domain.Models.Device;
+using SmartHomeAutomation.Domain.Models.DeviceModels;
+using SmartHomeAutomation.Services.Interfaces.Device;
 
 namespace SmartHomeAutomation.Api.Controllers.Device
 {
@@ -13,30 +9,32 @@ namespace SmartHomeAutomation.Api.Controllers.Device
     [Route("api/[controller]")]
     public class DeviceTypesController : Controller
     {
-        private readonly SmartHomeAutomationContext context;
+        private readonly IDeviceTypeService deviceTypeService;
 
-        public DeviceTypesController(SmartHomeAutomationContext context)
+        public DeviceTypesController(IDeviceTypeService deviceTypeService)
         {
-            this.context = context;
+            this.deviceTypeService = deviceTypeService;
         }
 
-        // GET: api/DeviceTypes
-        [HttpGet]
-        public IEnumerable<DeviceType> GetDeviceTypes()
+        /// <summary>
+        /// Get all the device types
+        /// </summary>
+        /// <returns>List of device types in JSON format</returns>
+        [HttpGet("all")]
+        public IActionResult GetDeviceTypes()
         {
-            return context.DeviceTypes;
+            return Ok(deviceTypeService.GetAll());
         }
 
-        // GET: api/DeviceTypes/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetDeviceType([FromRoute] Guid id)
+        /// <summary>
+        /// Get an individual device
+        /// </summary>
+        /// <param name="guid">Device type GUID</param>
+        /// <returns>Device type object in JSON format</returns>
+        [HttpGet("{guid}")]
+        public IActionResult GetDeviceType([FromRoute] Guid guid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var deviceType = await context.DeviceTypes.SingleOrDefaultAsync(m => m.DeviceTypeId == id);
+            var deviceType = deviceTypeService.GetByGuid(guid);
 
             if (deviceType == null)
             {
@@ -46,77 +44,52 @@ namespace SmartHomeAutomation.Api.Controllers.Device
             return Ok(deviceType);
         }
 
-        // PUT: api/DeviceTypes/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDeviceType([FromRoute] Guid id, [FromBody] DeviceType deviceType)
+        [HttpGet("{guid}/devices/{pageSize:int}/{currentPage:int}/{sortOrder:alpha?}/{direction:alpha?}")]
+        public IActionResult GetDevicesForDeviceType([FromRoute] Guid guid, [FromRoute] int pageSize, [FromRoute] int currentPage, [FromRoute] string sortOrder, [FromRoute] string direction)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var devices =
+                deviceTypeService.GetByPropertyByPage("Devices", guid, pageSize, currentPage, sortOrder, direction);
+            return Ok(devices);
+        }
 
-            if (id != deviceType.DeviceTypeId)
+        /// <summary>
+        /// Update a device type
+        /// </summary>
+        /// <param name="guid">Device type GUID from URL</param>
+        /// <param name="deviceType">Device type object from body</param>
+        /// <returns>Updated device type object in JSON format</returns>
+        [HttpPut("{guid}")]
+        public IActionResult PutDeviceType([FromRoute] Guid guid, [FromBody] DeviceType deviceType)
+        {
+            if (guid != deviceType.DeviceTypeId)
             {
                 return BadRequest();
             }
 
-            context.Entry(deviceType).State = EntityState.Modified;
-
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DeviceTypeExists(id))
-                {
-                    return NotFound();
-                }
-                throw;
-            }
-
-            return Ok(deviceType);
+            return Ok(deviceTypeService.Upsert(deviceType, User));
         }
 
-        // POST: api/DeviceTypes
+        /// <summary>
+        /// Create a new device type
+        /// </summary>
+        /// <param name="deviceType">Device type object from body</param>
+        /// <returns>Newly created device object in JSON format</returns>
         [HttpPost]
-        public async Task<IActionResult> PostDeviceType([FromBody] DeviceType deviceType)
+        public IActionResult PostDeviceType([FromBody] DeviceType deviceType)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            context.DeviceTypes.Add(deviceType);
-            await context.SaveChangesAsync();
-
-            return CreatedAtAction("GetDeviceType", new { id = deviceType.DeviceTypeId }, deviceType);
+            return Ok(deviceTypeService.Upsert(deviceType, User));
         }
 
-        // DELETE: api/DeviceTypes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDeviceType([FromRoute] Guid id)
+        /// <summary>
+        /// Delete a device type
+        /// </summary>
+        /// <param name="guid">Device type GUID from URL</param>
+        /// <returns>Deleted device type object in JSON format</returns>
+        [HttpDelete("{guid}")]
+        public IActionResult DeleteDeviceType([FromRoute] Guid guid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var deviceType = await context.DeviceTypes.SingleOrDefaultAsync(m => m.DeviceTypeId == id);
-            if (deviceType == null)
-            {
-                return NotFound();
-            }
-
-            context.DeviceTypes.Remove(deviceType);
-            await context.SaveChangesAsync();
-
-            return Ok(deviceType);
-        }
-
-        private bool DeviceTypeExists(Guid id)
-        {
-            return context.DeviceTypes.Any(e => e.DeviceTypeId == id);
+            var account = deviceTypeService.SoftDelete(guid, User);
+            return Ok(account);
         }
     }
 }

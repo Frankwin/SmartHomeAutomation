@@ -1,9 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using SmartHomeAutomation.Domain.Models.Account;
-using SmartHomeAutomation.Services.Interfaces;
+using SmartHomeAutomation.Services.Interfaces.Account;
 
-namespace SmartHomeAutomation.Api.Controllers
+namespace SmartHomeAutomation.Api.Controllers.Account
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
@@ -51,7 +50,7 @@ namespace SmartHomeAutomation.Api.Controllers
         /// <param name="account">Account object from body</param>
         /// <returns>Updated account object in JSON format</returns>
         [HttpPut("{guid}")]
-        public IActionResult PutAccount([FromRoute] Guid guid, [FromBody] Account account)
+        public IActionResult PutAccount([FromRoute] Guid guid, [FromBody] Domain.Models.AccountModels.Account account)
         {
             if (guid != account.AccountId)
             {
@@ -67,7 +66,7 @@ namespace SmartHomeAutomation.Api.Controllers
         /// <param name="account">Account object from body</param>
         /// <returns>Newly created account object in JSON format</returns>
         [HttpPost]
-        public IActionResult PostAccount([FromBody] Account account)
+        public IActionResult PostAccount([FromBody] Domain.Models.AccountModels.Account account)
         {
             return Ok(accountService.Upsert(account, User));
         }

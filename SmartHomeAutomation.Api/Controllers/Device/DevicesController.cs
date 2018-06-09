@@ -50,7 +50,7 @@ namespace SmartHomeAutomation.Api.Controllers.Device
         /// <param name="device">Device object from body</param>
         /// <returns>Updated device object in JSON format</returns>
         [HttpPut("{guid}")]
-        public IActionResult PutDevice([FromRoute] Guid guid, [FromBody] Domain.Models.Device.Device device)
+        public IActionResult PutDevice([FromRoute] Guid guid, [FromBody] Domain.Models.DeviceModels.Device device)
         {
             if (guid != device.DeviceId)
             {
@@ -66,7 +66,7 @@ namespace SmartHomeAutomation.Api.Controllers.Device
         /// <param name="device">Device object from body</param>
         /// <returns>Newly created device object in JSON format</returns>
         [HttpPost]
-        public IActionResult PostDevice([FromBody] Domain.Models.Device.Device device)
+        public IActionResult PostDevice([FromBody] Domain.Models.DeviceModels.Device device)
         {
             return Ok(deviceService.Upsert(device, User));
         }

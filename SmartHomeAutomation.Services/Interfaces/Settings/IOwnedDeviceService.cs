@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Security.Principal;
-using SmartHomeAutomation.Domain.Models.Settings;
+using SmartHomeAutomation.Domain.Models.SettingsModels;
 
-namespace SmartHomeAutomation.Services.Interfaces
+namespace SmartHomeAutomation.Services.Interfaces.Settings
 {
     public interface IOwnedDeviceService : IReaderService<OwnedDevice>, IWriterService<OwnedDevice>
     {

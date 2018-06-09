@@ -3,11 +3,12 @@ using System.Data;
 using System.Linq;
 using System.Security.Principal;
 using SmartHomeAutomation.Domain.Models;
-using SmartHomeAutomation.Domain.Models.Device;
+using SmartHomeAutomation.Domain.Models.DeviceModels;
 using SmartHomeAutomation.Services.Helpers;
 using SmartHomeAutomation.Services.Interfaces;
+using SmartHomeAutomation.Services.Interfaces.Device;
 
-namespace SmartHomeAutomation.Services.Services
+namespace SmartHomeAutomation.Services.Services.Device
 {
     public class DeviceCategoryService : BaseService<DeviceCategory, SmartHomeAutomationContext>, IDeviceCategoryService
     {

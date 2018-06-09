@@ -3,19 +3,19 @@ using System.Data;
 using System.Linq;
 using System.Security.Principal;
 using SmartHomeAutomation.Domain.Models;
-using SmartHomeAutomation.Domain.Models.User;
 using SmartHomeAutomation.Services.Helpers;
 using SmartHomeAutomation.Services.Interfaces;
+using SmartHomeAutomation.Services.Interfaces.User;
 
-namespace SmartHomeAutomation.Services.Services
+namespace SmartHomeAutomation.Services.Services.User
 {
-    public class UserService : BaseService<User, SmartHomeAutomationContext>, IUserService
+    public class UserService : BaseService<Domain.Models.UserModels.User, SmartHomeAutomationContext>, IUserService
     {
         public UserService(ISmartHomeAutomationService smartHomeAutomationService) : base(smartHomeAutomationService.ConnectionString)
         {
         }
 
-        public User Upsert(User user, IPrincipal userPrincipal)
+        public Domain.Models.UserModels.User Upsert(Domain.Models.UserModels.User user, IPrincipal userPrincipal)
         {
             var existingUser = CheckForExistingUserName(user.UserName);
             if (existingUser != null)
@@ -45,7 +45,7 @@ namespace SmartHomeAutomation.Services.Services
             return user;
         }
 
-        public User SoftDelete(Guid guid, IPrincipal userPrincipal)
+        public Domain.Models.UserModels.User SoftDelete(Guid guid, IPrincipal userPrincipal)
         {
             using (var context = new SmartHomeAutomationContext())
             {
@@ -60,7 +60,7 @@ namespace SmartHomeAutomation.Services.Services
             }
         }
 
-        public User CheckForExistingUserName(string name)
+        public Domain.Models.UserModels.User CheckForExistingUserName(string name)
         {
             using (var context = new SmartHomeAutomationContext())
             {

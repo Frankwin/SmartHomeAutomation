@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Security.Principal;
-using SmartHomeAutomation.Domain.Models.Settings;
+using SmartHomeAutomation.Domain.Models.SettingsModels;
 
 namespace SmartHomeAutomation.Services.Interfaces.Settings
 {

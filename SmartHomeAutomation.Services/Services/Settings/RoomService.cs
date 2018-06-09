@@ -3,7 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Security.Principal;
 using SmartHomeAutomation.Domain.Models;
-using SmartHomeAutomation.Domain.Models.Settings;
+using SmartHomeAutomation.Domain.Models.SettingsModels;
 using SmartHomeAutomation.Services.Helpers;
 using SmartHomeAutomation.Services.Interfaces;
 using SmartHomeAutomation.Services.Interfaces.Settings;

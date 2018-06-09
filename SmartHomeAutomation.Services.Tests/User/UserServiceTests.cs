@@ -11,7 +11,7 @@ namespace SmartHomeAutomation.Services.Tests.User
         [TestMethod]        
         public void CreateNewUserWithUpsertTest()
         {
-            var newUser = new Domain.Models.User.User {UserName = "New Upsert Test User", EmailAddress = "TestUser@test.com", Password = "password", AccountId = TestAccount.AccountId};
+            var newUser = new Domain.Models.UserModels.User {UserName = "New Upsert Test User", EmailAddress = "TestUser@test.com", Password = "password", AccountId = TestAccount.AccountId};
             UserService.Upsert(newUser, TestUserPrincipal);
             var foundUsers = UserService.Search("New Upsert Test User").ToList();
 
@@ -36,7 +36,7 @@ namespace SmartHomeAutomation.Services.Tests.User
             TestUser.IsDeleted = true;
             UserService.Update(TestUser);
 
-            var newUser = new Domain.Models.User.User { UserName= TestUserName, EmailAddress = "TestUser@test.com", Password = "password", AccountId = TestAccount.AccountId};
+            var newUser = new Domain.Models.UserModels.User { UserName= TestUserName, EmailAddress = "TestUser@test.com", Password = "password", AccountId = TestAccount.AccountId};
             UserService.Upsert(newUser, TestUserPrincipal);
 
             var foundUsers = UserService.Search(TestUserName).ToList();

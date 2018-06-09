@@ -3,19 +3,19 @@ using System.Data;
 using System.Linq;
 using System.Security.Principal;
 using SmartHomeAutomation.Domain.Models;
-using SmartHomeAutomation.Domain.Models.Account;
 using SmartHomeAutomation.Services.Helpers;
 using SmartHomeAutomation.Services.Interfaces;
+using SmartHomeAutomation.Services.Interfaces.Account;
 
-namespace SmartHomeAutomation.Services.Services
+namespace SmartHomeAutomation.Services.Services.Account
 {
-    public class AccountService : BaseService<Account, SmartHomeAutomationContext>, IAccountService
+    public class AccountService : BaseService<Domain.Models.AccountModels.Account, SmartHomeAutomationContext>, IAccountService
     {
         public AccountService(ISmartHomeAutomationService smartHomeAutomationService) : base(smartHomeAutomationService.ConnectionString)
         {
         }
 
-        public Account Upsert(Account account, IPrincipal userPrincipal)
+        public Domain.Models.AccountModels.Account Upsert(Domain.Models.AccountModels.Account account, IPrincipal userPrincipal)
         {
             var existingAccount = CheckForExistingAccountName(account.AccountName);
             if (existingAccount != null)
@@ -45,7 +45,7 @@ namespace SmartHomeAutomation.Services.Services
             return account;
         }
 
-        public Account SoftDelete(Guid guid, IPrincipal userPrincipal)
+        public Domain.Models.AccountModels.Account SoftDelete(Guid guid, IPrincipal userPrincipal)
         {
             using (var context = new SmartHomeAutomationContext())
             {
@@ -60,7 +60,7 @@ namespace SmartHomeAutomation.Services.Services
             }
         }
 
-        public Account CheckForExistingAccountName(string name)
+        public Domain.Models.AccountModels.Account CheckForExistingAccountName(string name)
         {
             using (var context = new SmartHomeAutomationContext())
             {

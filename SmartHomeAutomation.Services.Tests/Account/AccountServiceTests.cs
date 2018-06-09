@@ -11,7 +11,7 @@ namespace SmartHomeAutomation.Services.Tests.Account
         [TestMethod]        
         public void CreateNewAccountWithUpsertTest()
         {
-            var newAccount = new Domain.Models.Account.Account {AccountName = "New Upsert Test Account"};
+            var newAccount = new Domain.Models.AccountModels.Account {AccountName = "New Upsert Test Account"};
             AccountService.Upsert(newAccount, TestUserPrincipal);
             var foundAccounts = AccountService.Search("New Upsert Test Account").ToList();
 
@@ -35,7 +35,7 @@ namespace SmartHomeAutomation.Services.Tests.Account
             TestAccount.IsDeleted = true;
             AccountService.Update(TestAccount);
 
-            var newAccount = new Domain.Models.Account.Account { AccountName = TestAccountName};
+            var newAccount = new Domain.Models.AccountModels.Account { AccountName = TestAccountName};
             AccountService.Upsert(newAccount, TestUserPrincipal);
 
             var foundAccounts = AccountService.Search(TestAccountName).ToList();

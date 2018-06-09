@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Security.Principal;
-using SmartHomeAutomation.Domain.Models.Device;
+using SmartHomeAutomation.Domain.Models.DeviceModels;
 
 namespace SmartHomeAutomation.Services.Interfaces.Device
 {

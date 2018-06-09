@@ -3,8 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartHomeAutomation.Domain.Interfaces;
-using SmartHomeAutomation.Domain.Models.Device;
-using SmartHomeAutomation.Domain.Models.Settings;
+using SmartHomeAutomation.Domain.Models.AccountModels;
+using SmartHomeAutomation.Domain.Models.DeviceModels;
+using SmartHomeAutomation.Domain.Models.SettingsModels;
+using SmartHomeAutomation.Domain.Models.UserModels;
 
 namespace SmartHomeAutomation.Domain.Models
 {
@@ -19,19 +21,52 @@ namespace SmartHomeAutomation.Domain.Models
         { }
 
         // Account tables
-        public DbSet<Account.Account> Accounts { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
         // User tables
-        public DbSet<User.User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
 
         // Device tables
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<DeviceCategory> DeviceCategories { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
-        public DbSet<Device.Device> Devices { get; set; }
+        public DbSet<Device> Devices { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<OwnedDevice> OwnedDevices { get; set;}
         public DbSet<DeviceSetting> DeviceSettings { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Account>()
+                .HasMany(e => e.Users)
+                .WithOne(e => e.Account);
+            modelBuilder.Entity<Account>()
+                .HasMany(e => e.Rooms)
+                .WithOne(e => e.Account);
+            modelBuilder.Entity<Account>()
+                .HasMany(e => e.OwnedDevices)
+                .WithOne(e => e.Account);
+            modelBuilder.Entity<DeviceCategory>()
+                .HasMany(e => e.DeviceTypes)
+                .WithOne(e => e.DeviceCategory);
+            modelBuilder.Entity<DeviceType>()
+                .HasMany(e => e.Devices)
+                .WithOne(e => e.DeviceType);
+            modelBuilder.Entity<Manufacturer>()
+                .HasMany(e => e.Devices)
+                .WithOne(e => e.Manufacturer);
+            modelBuilder.Entity<Room>()
+                .HasMany(e => e.LinkedDevices)
+                .WithOne(e => e.Room);
+            modelBuilder.Entity<OwnedDevice>()
+                .HasOne(e => e.Device)
+                .WithMany(e => e.OwnedDevice)
+                .IsRequired(false);
+            modelBuilder.Entity<OwnedDevice>()
+                .HasMany(e => e.DeviceSettings)
+                .WithOne(e => e.OwnedDevice);
+        }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
