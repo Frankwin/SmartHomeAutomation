@@ -17,7 +17,7 @@ namespace SmartHomeAutomation.Domain.Models.AccountModels
         [MaxLength(50), Required, Column(Order = 1)]
         public string AccountName { get; set; }
 
-        public ICollection<User> Users { get; set; }
+//        public ICollection<User> Users { get; set; }
         public ICollection<Room> Rooms { get; set; }
         public ICollection<OwnedDevice> OwnedDevices { get; set; }
 

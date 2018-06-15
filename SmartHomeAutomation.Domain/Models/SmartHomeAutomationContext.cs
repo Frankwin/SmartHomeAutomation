@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SmartHomeAutomation.Domain.Interfaces;
 using SmartHomeAutomation.Domain.Models.AccountModels;
 using SmartHomeAutomation.Domain.Models.DeviceModels;
 using SmartHomeAutomation.Domain.Models.SettingsModels;
-using SmartHomeAutomation.Domain.Models.UserModels;
 
 namespace SmartHomeAutomation.Domain.Models
 {
-    public class SmartHomeAutomationContext : DbContext//, IDesignTimeDbContextFactory<SmartHomeAutomationContext>
+    public class SmartHomeAutomationContext : IdentityDbContext
     {
         public SmartHomeAutomationContext(DbContextOptions<SmartHomeAutomationContext> options)
             : base(options)
@@ -24,7 +24,7 @@ namespace SmartHomeAutomation.Domain.Models
         public DbSet<Account> Accounts { get; set; }
 
         // User tables
-        public DbSet<User> Users { get; set; }
+//        public DbSet<User> Users { get; set; }
 
         // Device tables
         public DbSet<Manufacturer> Manufacturers { get; set; }
@@ -35,35 +35,35 @@ namespace SmartHomeAutomation.Domain.Models
         public DbSet<OwnedDevice> OwnedDevices { get; set;}
         public DbSet<DeviceSetting> DeviceSettings { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Account>()
-                .HasMany(e => e.Users)
-                .WithOne(e => e.Account);
-            modelBuilder.Entity<Account>()
+            base.OnModelCreating(builder);
+//            builder.Entity<Account>()
+//                .HasMany(e => e.Users)
+//                .WithOne(e => e.Account);
+            builder.Entity<Account>()
                 .HasMany(e => e.Rooms)
                 .WithOne(e => e.Account);
-            modelBuilder.Entity<Account>()
+            builder.Entity<Account>()
                 .HasMany(e => e.OwnedDevices)
                 .WithOne(e => e.Account);
-            modelBuilder.Entity<DeviceCategory>()
+            builder.Entity<DeviceCategory>()
                 .HasMany(e => e.DeviceTypes)
                 .WithOne(e => e.DeviceCategory);
-            modelBuilder.Entity<DeviceType>()
+            builder.Entity<DeviceType>()
                 .HasMany(e => e.Devices)
                 .WithOne(e => e.DeviceType);
-            modelBuilder.Entity<Manufacturer>()
+            builder.Entity<Manufacturer>()
                 .HasMany(e => e.Devices)
                 .WithOne(e => e.Manufacturer);
-            modelBuilder.Entity<Room>()
+            builder.Entity<Room>()
                 .HasMany(e => e.LinkedDevices)
                 .WithOne(e => e.Room);
-            modelBuilder.Entity<OwnedDevice>()
+            builder.Entity<OwnedDevice>()
                 .HasOne(e => e.Device)
                 .WithMany(e => e.OwnedDevice)
                 .IsRequired(false);
-            modelBuilder.Entity<OwnedDevice>()
+            builder.Entity<OwnedDevice>()
                 .HasMany(e => e.DeviceSettings)
                 .WithOne(e => e.OwnedDevice);
         }

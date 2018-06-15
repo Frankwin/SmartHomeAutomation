@@ -96,12 +96,12 @@ namespace SmartHomeAutomation.Services.Tests
             Assert.AreEqual(1, account.Count);
             Assert.AreEqual("Test Account 01", account.First().AccountName);
         }
-
-        [TestMethod]
-        public void GetAllIncludingTest()
-        {
-            var accounts = AccountService.GetAllIncluding(a => a.Users);
-            Assert.IsTrue(accounts.First().Users.Count == 0);
-        }
+//
+//        [TestMethod]
+//        public void GetAllIncludingTest()
+//        {
+//            var accounts = AccountService.GetAllIncluding(a => a.Users);
+//            Assert.IsTrue(accounts.First().Users.Count == 0);
+//        }
     }
 }

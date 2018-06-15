@@ -8,7 +8,7 @@ using SmartHomeAutomation.Services.Services;
 using SmartHomeAutomation.Services.Services.Account;
 using SmartHomeAutomation.Services.Services.Device;
 using SmartHomeAutomation.Services.Services.Settings;
-using SmartHomeAutomation.Services.Services.User;
+//using SmartHomeAutomation.Services.Services.User;
 
 namespace SmartHomeAutomation.Services.Tests
 {
@@ -20,7 +20,7 @@ namespace SmartHomeAutomation.Services.Tests
         public readonly DeviceCategoryService DeviceCategoryService = new DeviceCategoryService(SmartHomeAutomationService);
         public readonly ManufacturerService ManufacturerService = new ManufacturerService(SmartHomeAutomationService);
         public readonly DeviceTypeService DeviceTypeService = new DeviceTypeService(SmartHomeAutomationService);
-        public readonly UserService UserService = new UserService(SmartHomeAutomationService);
+//        public readonly UserService UserService = new UserService(SmartHomeAutomationService);
         public readonly RoomService RoomService = new RoomService(SmartHomeAutomationService);
         public readonly DeviceService DeviceService = new DeviceService(SmartHomeAutomationService);
         public readonly OwnedDeviceService OwnedDeviceService = new OwnedDeviceService(SmartHomeAutomationService);
@@ -41,7 +41,7 @@ namespace SmartHomeAutomation.Services.Tests
         public DeviceCategory TestDeviceCategory { get; set; }
         public Manufacturer TestManufacturer { get; set; }
         public DeviceType TestDeviceType { get; set; }
-        public Domain.Models.UserModels.User TestUser { get; set; }
+//        public Domain.Models.UserModels.User TestUser { get; set; }
         public Room TestRoom { get; set; }
         public Domain.Models.DeviceModels.Device TestDevice { get; set; }
         public OwnedDevice TestOwnedDevice { get; set; }
@@ -51,7 +51,7 @@ namespace SmartHomeAutomation.Services.Tests
         public virtual void TestInitialize()
         {
             TestAccount = CreateTestAccount();
-            TestUser = CreateTestUser();
+//            TestUser = CreateTestUser();
             TestDeviceCategory = CreateTestDeviceCategory();
             TestDeviceType = CreateTestDeviceType();
             TestManufacturer = CreateTestManufacturer();
@@ -71,7 +71,7 @@ namespace SmartHomeAutomation.Services.Tests
             DeleteTestManufacturer(TestManufacturer);
             DeleteTestDeviceType(TestDeviceType);
             DeleteTestDeviceCategory(TestDeviceCategory);
-            DeleteTestUser(TestUser);
+//            DeleteTestUser(TestUser);
             DeleteTestAccount(TestAccount);
         }
 
@@ -136,18 +136,18 @@ namespace SmartHomeAutomation.Services.Tests
             DeviceTypeService.DeleteByGuid(deviceType.DeviceTypeId);
         }
 
-        public Domain.Models.UserModels.User CreateTestUser(string testUserName = TestUserName)
-        {
-            var newTestUser = new Domain.Models.UserModels.User {UserName = testUserName, AccountId = TestAccount.AccountId,EmailAddress = "testuser@test.com", Password = "password"};
-            UserService.Insert(newTestUser);
-            newTestUser = UserService.Search(testUserName).First();
-            return newTestUser;
-        }
-
-        public void DeleteTestUser(Domain.Models.UserModels.User user)
-        {
-            UserService.DeleteByGuid(user.UserId);
-        }
+//        public Domain.Models.UserModels.User CreateTestUser(string testUserName = TestUserName)
+//        {
+//            var newTestUser = new Domain.Models.UserModels.User {UserName = testUserName, AccountId = TestAccount.AccountId,EmailAddress = "testuser@test.com", Password = "password"};
+//            UserService.Insert(newTestUser);
+//            newTestUser = UserService.Search(testUserName).First();
+//            return newTestUser;
+//        }
+//
+//        public void DeleteTestUser(Domain.Models.UserModels.User user)
+//        {
+//            UserService.DeleteByGuid(user.UserId);
+//        }
 
         public Room CreateTestRoom(string testRoomName = TestRoomName)
         {

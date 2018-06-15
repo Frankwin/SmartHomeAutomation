@@ -8,17 +8,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SmartHomeAutomation.Web.Enums;
-using SmartHomeAutomation.Web.Models;
 using SmartHomeAutomation.Web.ViewModels;
 
-namespace SmartHomeAutomation.Web.Controllers
+namespace SmartHomeAutomation.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<AppUser> userManager;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public AccountController(UserManager<AppUser> userManager)
+        public AccountController(UserManager<IdentityUser> userManager)
         {
             this.userManager = userManager;
         }
@@ -40,7 +39,7 @@ namespace SmartHomeAutomation.Web.Controllers
                     };
                 }
 
-                user = new AppUser
+                user = new IdentityUser
                 {
                     Id = Guid.NewGuid().ToString(),
                     UserName = model.UserName,

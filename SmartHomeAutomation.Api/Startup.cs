@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Buffers;
 using System.IO;
+using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,12 +23,12 @@ using SmartHomeAutomation.Services.Interfaces;
 using SmartHomeAutomation.Services.Interfaces.Account;
 using SmartHomeAutomation.Services.Interfaces.Device;
 using SmartHomeAutomation.Services.Interfaces.Settings;
-using SmartHomeAutomation.Services.Interfaces.User;
+//using SmartHomeAutomation.Services.Interfaces.User;
 using SmartHomeAutomation.Services.Services;
 using SmartHomeAutomation.Services.Services.Account;
 using SmartHomeAutomation.Services.Services.Device;
 using SmartHomeAutomation.Services.Services.Settings;
-using SmartHomeAutomation.Services.Services.User;
+//using SmartHomeAutomation.Services.Services.User;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SmartHomeAutomation.Api
@@ -37,8 +45,6 @@ namespace SmartHomeAutomation.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            const string connection = @"Server=localhost;Database=SmartHomeAutomation;Trusted_Connection=True;ConnectRetryCount=0";
-            services.AddDbContext<SmartHomeAutomationContext>(opt => opt.UseSqlServer(connection));
             services.AddMvc(options =>
             {
                 options.OutputFormatters.Clear();
@@ -46,14 +52,30 @@ namespace SmartHomeAutomation.Api
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 }, ArrayPool<char>.Shared));
-            });
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDbContext<SmartHomeAutomationContext>(
+                opt => opt.UseSqlServer(Configuration.GetConnectionString("SmartHomeAutomationDb"), optionsBuilder => 
+                    optionsBuilder.MigrationsAssembly(typeof(Startup).Assembly.GetName().Name)));
+            services.AddIdentityCore<IdentityUser>(options => { });
+            services.AddIdentityCore<IdentityRole>(options => { });
+            services.AddScoped<IUserStore<IdentityUser>, UserStore<IdentityUser, IdentityRole, SmartHomeAutomationContext>>();
+            
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    options.Events.OnRedirectToAccessDenied = ReplaceRedirector(HttpStatusCode.Forbidden, options.Events.OnRedirectToAccessDenied);
+                    options.Events.OnRedirectToLogin = ReplaceRedirector(HttpStatusCode.Unauthorized, options.Events.OnRedirectToLogin);
+                });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
                     new Info
                     {
                         Version = "v1",
-                        Title = "Smart Home Automation API", 
+                        Title = "Smart Home Automation API",
                         Description = "API for the Smart Home Automation software",
                         TermsOfService = "None",
                         Contact = new Contact
@@ -75,8 +97,6 @@ namespace SmartHomeAutomation.Api
                 c.IncludeXmlComments(xmlPath);
             });
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             // Register application services
             services.AddScoped<ISmartHomeAutomationService, SmartHomeAutomationService>();
             // Account Services
@@ -90,8 +110,13 @@ namespace SmartHomeAutomation.Api
             services.AddScoped<IOwnedDeviceService, OwnedDeviceService>();
             services.AddScoped<IRoomService, RoomService>();
             // User Services
-            services.AddScoped<IUserService, UserService>();
-            
+//            services.AddScoped<IUserService, UserService>();
+
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
         }
 
 
@@ -118,13 +143,45 @@ namespace SmartHomeAutomation.Api
 
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseSpaStaticFiles();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    "default",
+                    "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseSpa(spa =>
+            {
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer("start");
+                }
+            });
         }
+
+        private static Func<RedirectContext<CookieAuthenticationOptions>, Task> ReplaceRedirector(HttpStatusCode statusCode,
+            Func<RedirectContext<CookieAuthenticationOptions>, Task> existingRedirector) =>
+            context =>
+            {
+                if (!context.Request.Path.StartsWithSegments("/api")) return existingRedirector(context);
+                context.Response.StatusCode = (int)statusCode;
+                return Task.CompletedTask;
+            };
     }
 }

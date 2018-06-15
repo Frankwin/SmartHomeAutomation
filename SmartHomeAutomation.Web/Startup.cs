@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SmartHomeAutomation.Web.Infrastructure;
-using SmartHomeAutomation.Web.Models;
 
 namespace SmartHomeAutomation.Web
 {
@@ -28,8 +28,14 @@ namespace SmartHomeAutomation.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddIdentityCore<AppUser>(options => { });
-            services.AddScoped<IUserStore<AppUser>, AppUserStore>();
+            services.AddDbContext<IdentityDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("AspNetCoreIdentityDb"),
+                    optionsBuilder =>
+                        optionsBuilder.MigrationsAssembly(typeof(Startup).Assembly.GetName().Name)));
+
+            services.AddIdentityCore<IdentityUser>(options => { });
+            services.AddIdentityCore<IdentityRole>(options => { });
+            services.AddScoped<IUserStore<IdentityUser>, UserStore<IdentityUser, IdentityRole, IdentityDbContext>>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
@@ -84,7 +90,7 @@ namespace SmartHomeAutomation.Web
             });
         }
 
-        static Func<RedirectContext<CookieAuthenticationOptions>, Task> ReplaceRedirector(HttpStatusCode statusCode,
+        private static Func<RedirectContext<CookieAuthenticationOptions>, Task> ReplaceRedirector(HttpStatusCode statusCode,
             Func<RedirectContext<CookieAuthenticationOptions>, Task> existingRedirector) =>
             context =>
             {
