@@ -1,0 +1,30 @@
+{
+  "name": "smarthomeautomation.web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "awesome-typescript-loader": "^3.5.0",
+    "chai": "^4.2.0",
+    "css": "^2.2.4",
+    "css-loader": "^0.28.11",
+    "expose-loader": "^0.7.5",
+    "jasmine-core": "^2.99.1",
+    "jquery": "^3.3.1",
+    "karma": "^3.0.0",
+    "karma-jasmine": "^1.1.2",
+    "karma-webpack": "^2.0.13",
+    "rxjs": "^5.5.12",
+    "typescript": "^2.9.2",
+    "webpack": "^2.7.0",
+    "webpack-hot-middleware": "^2.24.2",
+    "webpack-merge": "^4.1.4",
+    "zone.js": "^0.8.26"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
