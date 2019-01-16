@@ -1,4 +1,4 @@
-﻿namespace SmartHomeAutomation.Web.ViewModels
+﻿namespace SmartHomeAutomation.Api.ViewModels
 {
     public class UserStateViewModel
     {

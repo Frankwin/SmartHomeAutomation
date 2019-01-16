@@ -1,6 +1,6 @@
-﻿using SmartHomeAutomation.Web.Enums;
+﻿using SmartHomeAutomation.Api.Enums;
 
-namespace SmartHomeAutomation.Web.ViewModels
+namespace SmartHomeAutomation.Api.ViewModels
 {
     public class ResultViewModel
     {

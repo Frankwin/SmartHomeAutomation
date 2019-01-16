@@ -1,4 +1,4 @@
-﻿namespace SmartHomeAutomation.Web.Enums
+﻿namespace SmartHomeAutomation.Api.Enums
 {
     public enum Status
     {

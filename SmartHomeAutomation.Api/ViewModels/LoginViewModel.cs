@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SmartHomeAutomation.Web.ViewModels
+namespace SmartHomeAutomation.Api.ViewModels
 {
     public class LoginViewModel
     {

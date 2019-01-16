@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SmartHomeAutomation.Web.Enums;
-using SmartHomeAutomation.Web.ViewModels;
+using SmartHomeAutomation.Api.Enums;
+using SmartHomeAutomation.Api.ViewModels;
 
-namespace SmartHomeAutomation.Api.Controllers
+namespace SmartHomeAutomation.Api.Controllers.User
 {
     [Route("api/[controller]/[action]")]
     public class AccountController : Controller
